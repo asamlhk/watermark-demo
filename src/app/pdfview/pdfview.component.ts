@@ -30,8 +30,8 @@ export class PdfviewComponent implements OnInit {
   scrollMe(event) {
     let v = document.getElementById('pdfview')
 
-    console.log(v.scrollHeight, v.scrollTop, v.clientHeight)
-    if (this.page < this.pdf.numPages && v.scrollHeight - v.scrollTop == v.clientHeight) {
+
+    if (this.page < this.pdf.numPages && v.scrollHeight - v.scrollTop <= v.clientHeight) {
       this.changePage(this.page + 1);
 
     }
@@ -75,13 +75,19 @@ export class PdfviewComponent implements OnInit {
     //return
     var can = document.getElementById('pdfview').querySelector('canvas');
     var ctx = can.getContext("2d");
-    ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+    ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
     ctx.font = "30px Arial";
-    for (var i = 0; i < 100; i++) {
-      for (var j = 0; j < 100; j++) {
-        ctx.strokeText("Readonly", 300 * i, 200 * j)
+    ctx.restore();
+    ctx.rotate(-45);
+    for (var i = -100; i < 100; i++) {
+      for (var j = -100; j < 100; j++) {
+
+
+        ctx.fillText("Readonly", 300 * i, 200 * j);
+        ctx.restore();
       }
     }
+
   }
 
 

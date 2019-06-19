@@ -20,7 +20,7 @@ export class AppComponent {
     const dialogRef = this.dialog.open(PdfviewComponent, {
       width: '100vw',
       data: {
-        url: "https://gahp.net/wp-content/uploads/2017/09/sample.pdf"
+        url: "https://www.tutorialspoint.com/angular2/angular2_tutorial.pdf"
       },
       hasBackdrop: true,
     });
