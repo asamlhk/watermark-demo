@@ -1,8 +1,8 @@
 <div class="pdf-container">
 	<div class="toolbar">
-		<button (click)="changePage(page-1); " mat-raised-button [disabled]="page<2"><</button>
-	{{page}} / {{pdf?.numPages}}
-  <button (click)="changePage(page+1);" mat-raised-button [disabled]="page>=pdf?.numPages">></button>
+		<button (click)="changePage(cpage-1); " mat-raised-button [disabled]="cpage<2"><</button>
+	{{cpage}} / {{pdf?.numPages}}
+  <button (click)="changePage(cpage+1);" mat-raised-button [disabled]="cpage>=pdf?.numPages">></button>
  
   <button mat-raised-button  [mat-dialog-close]="!readAllPages()"  >Close</button>
  
@@ -13,7 +13,7 @@
                (after-load-complete)="callBackFn($event)"
               [show-all]="false"
               [(page)]="cpage"
-              (page-rendered)="pageRendered($event)"
+             
               
   ></pdf-viewer>   
   <div>
