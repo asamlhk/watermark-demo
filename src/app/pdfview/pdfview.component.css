@@ -1,0 +1,11 @@
+.toolbar {
+  text-align: center;
+   
+}
+
+:host ::ng-deep .pdfViewer .page .canvasWrapper {
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    background-image: url('https://pngimage.net/wp-content/uploads/2018/06/sample-only-png-4.png');
+    
+}
