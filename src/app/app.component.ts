@@ -9,7 +9,7 @@ import { PdfviewComponent } from './pdfview/pdfview.component';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  read = false;
+  signed = false;
   constructor(public dialog: MatDialog) {
     
 
@@ -27,7 +27,7 @@ export class AppComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.read = result;
+      this.signed = result;
 
     });
   }

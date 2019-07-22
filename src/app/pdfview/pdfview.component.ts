@@ -9,12 +9,13 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
   templateUrl: './pdfview.component.html',
   styleUrls: ['./pdfview.component.css']
 })
-export class PdfviewComponent implements OnInit {
+export class PdfviewComponent {
   src = '';
   //page = 1;
   pdf;
   cpage = 0;
   pageRead = [];
+  signed = false;
 
   constructor(
     public dialogRef: MatDialogRef<PdfviewComponent>,
@@ -42,7 +43,6 @@ export class PdfviewComponent implements OnInit {
     this.cpage = p;
     this.pageRead[this.cpage - 1] = true;
 
-
     setTimeout(() => {
       this.watermark();
     }, 300)
@@ -67,14 +67,11 @@ export class PdfviewComponent implements OnInit {
     }
     ctx.rotate(45);
     ctx.restore();
-
   }
 
-
-
   update() {
-    this.pageRead[this.page - 1] = true;
-    this.cpage = this.page;
+    this.pageRead[this.cpage - 1] = true;
+    this.cpage = this.cpage;
     this.watermark();
   }
 
@@ -92,8 +89,6 @@ export class PdfviewComponent implements OnInit {
   readAllPages() {
     return this.pageRead.filter(x => !x).length != 0;
   }
-
-
 
   onNoClick() {
     this.dialogRef.close();
