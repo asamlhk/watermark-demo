@@ -32,8 +32,12 @@ export class PdfviewComponent implements AfterViewInit {
         throttle(val => interval(50))
       )
       .subscribe((event) => {
+        console.log(event)
+        const ele = event.srcElement
+        console.log(ele.scrollHeight - ele.scrollTop, ele.clientHeight)
+        //scrollHeight: 1142
         let v = document.getElementById('pdfview')
-        if (this.cpage < this.pdf.numPages && v.scrollHeight - v.scrollTop <= v.clientHeight) {
+        if (this.cpage < this.pdf.numPages && v.scrollHeight - v.scrollTop <= v.clientHeight ) {
           this.changePage(this.cpage + 1);
         }
 
