@@ -1,9 +1,12 @@
 
 import * as R from 'ramda';
-import { Component, Inject, OnInit, HostListener } from '@angular/core';
+import { Component, Inject, OnInit, HostListener, AfterViewInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
-import {Observable} from "rxjs";
+import { Observable, pipe, interval } from "rxjs";
 import 'rxjs/add/observable/fromEvent';
+//import 'rxjs/add/observable/throttle';
+//import 'rxjs/add/observable/debounceTime';
+import { debounceTime, throttle } from 'rxjs/operators';
 
 
 @Component({
@@ -11,7 +14,7 @@ import 'rxjs/add/observable/fromEvent';
   templateUrl: './pdfview.component.html',
   styleUrls: ['./pdfview.component.css']
 })
-export class PdfviewComponent {
+export class PdfviewComponent implements AfterViewInit {
   src = '';
   //page = 1;
   pdf;
@@ -21,6 +24,26 @@ export class PdfviewComponent {
 
   changingPage = false;
 
+  ngAfterViewInit() {
+    const pdfview = document.getElementById('pdfview');
+    Observable.fromEvent(pdfview, 'scroll')
+      .pipe(
+        debounceTime(50),
+        throttle(val => interval(50))
+      )
+      .subscribe((event) => {
+        let v = document.getElementById('pdfview')
+        if (this.cpage < this.pdf.numPages && v.scrollHeight - v.scrollTop <= v.clientHeight) {
+          this.changePage(this.cpage + 1);
+        }
+
+      /if (this.cpage > 1 && v.scrollTop == 0) {
+        this.changePage(this.cpage - 1);
+      }        
+      })
+  }
+
+
   constructor(
     public dialogRef: MatDialogRef<PdfviewComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -28,23 +51,23 @@ export class PdfviewComponent {
     this.src = data.url;
     this.signed = data.signed;
 
-    Observable.fromEvent(window, 'scroll').subscribe(
-      x=>console.log(x)
-    )
+
+
   }
 
-/*
-  @HostListener("scroll", ['$event'])
-  scrollMe(event) {
-    let v = document.getElementById('pdfview')
-    if (this.cpage < this.pdf.numPages && v.scrollHeight - v.scrollTop <= v.clientHeight) {
-      this.changePage(this.cpage + 1);
+
+  /*
+    @HostListener("scroll", ['$event'])
+    scrollMe(event) {
+      let v = document.getElementById('pdfview')
+      if (this.cpage < this.pdf.numPages && v.scrollHeight - v.scrollTop <= v.clientHeight) {
+        this.changePage(this.cpage + 1);
+      }
+      //if (this.cpage > 1 && v.scrollTop == 0) {
+        //this.changePage(this.cpage - 1);
+      //}
     }
-    //if (this.cpage > 1 && v.scrollTop == 0) {
-      //this.changePage(this.cpage - 1);
-    //}
-  }
-  */
+    */
 
   changePage(p) {
     this.cpage = p;

@@ -2,7 +2,7 @@
 	<div class="toolbar">
 		Page {{cpage}}<button mat-raised-button  [mat-dialog-close]="signed"  >Close</button> 
   </div>
-  <div (scroll)="scrollMe($event)" id="pdfview"   >
+  <div   id="pdfview"   >
     <pdf-viewer [src]="src"
                 [original-size]="false"
                 (after-load-complete)="callBackFn($event)"
