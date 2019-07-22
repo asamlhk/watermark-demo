@@ -11,8 +11,8 @@ export class SignComponent {
   @ViewChild(SignaturePad, { static: false }) signaturePad: SignaturePad;
   private signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
     'minWidth': 5,
-    'canvasWidth': 500,
-    'canvasHeight': 300,
+    'canvasWidth': 300,
+    'canvasHeight': 150,
     //backgroundColor: "rgba(0, 0, 0, 1)"
   };
 

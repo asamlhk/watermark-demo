@@ -1,17 +1,19 @@
 <div class="pdf-container">
 	<div class="toolbar">
-
-		<button mat-raised-button  [mat-dialog-close]="signed"  >Close</button>
- 
- </div>
- <div style="height:80vh;overflow-y:scroll" (scroll)="scrollMe($event)" id="pdfview"   >
-  <pdf-viewer [src]="src"
-              [original-size]="false"
-               (after-load-complete)="callBackFn($event)"
-              [show-all]="false"
-              [(page)]="cpage"              
-  ></pdf-viewer>   
-
-  <app-sign [display]="signed"></app-sign>
+		<button mat-raised-button  [mat-dialog-close]="signed"  >Close</button> 
   </div>
+  <div (scroll)="scrollMe($event)" id="pdfview"   >
+    <pdf-viewer [src]="src"
+                [original-size]="false"
+                (after-load-complete)="callBackFn($event)"
+                [show-all]="false"
+                [(page)]="cpage"              
+    >
+    </pdf-viewer>   
+  </div>
+    <div id="signSection">
+      <span [ngStyle]="{display:readAllPages()?'block':'none'}">Please read all page for signing</span>
+      <app-sign [display]="!readAllPages()"></app-sign>
+    </div>
+
 </div>

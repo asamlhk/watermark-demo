@@ -9,3 +9,13 @@
     background-image: url('https://pngimage.net/wp-content/uploads/2018/06/sample-only-png-4.png');
     
 }
+
+#pdfview {
+  height:80vh;overflow-y:scroll;
+  width: 100%;
+}
+
+#signSection {
+  position: absolute;
+  bottom: 10vh;
+}

@@ -1,7 +1,7 @@
-<div [ngStyle]="{'display': display?'':'none'}" >
-<div id="spdiv">
-	<signature-pad [options]="signaturePadOptions" (onBeginEvent)="drawStart()" (onEndEvent)="drawComplete()">
-	</signature-pad>  
-</div>
- 
+<div [ngStyle]="{'display': display?'':'none'}">
+	<div id="spdiv">
+		<signature-pad [options]="signaturePadOptions" (onBeginEvent)="drawStart()" (onEndEvent)="drawComplete()">
+		</signature-pad>
+	</div>
+
 </div>
