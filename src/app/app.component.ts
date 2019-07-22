@@ -19,7 +19,7 @@ export class AppComponent {
   openDialog(): void {
     const dialogRef = this.dialog.open(PdfviewComponent, {
       width: '100vw',
-      height: '90vh',
+      height: '80vh',
       data: {
         url: "https://www.tutorialspoint.com/angular2/angular2_tutorial.pdf",
         signed: this.signed

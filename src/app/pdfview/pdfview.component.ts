@@ -37,7 +37,7 @@ export class PdfviewComponent implements AfterViewInit {
           this.changePage(this.cpage + 1);
         }
 
-      /if (this.cpage > 1 && v.scrollTop == 0) {
+      if (this.cpage > 1 && v.scrollTop == 0) {
         this.changePage(this.cpage - 1);
       }        
       })
