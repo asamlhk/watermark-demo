@@ -2,6 +2,8 @@
 import * as R from 'ramda';
 import { Component, Inject, OnInit, HostListener } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
+import {Observable} from "rxjs";
+import 'rxjs/add/observable/fromEvent';
 
 
 @Component({
@@ -24,9 +26,14 @@ export class PdfviewComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.src = data.url;
-    this.signed = data.signed
+    this.signed = data.signed;
+
+    Observable.fromEvent(window, 'scroll').subscribe(
+      x=>console.log(x)
+    )
   }
 
+/*
   @HostListener("scroll", ['$event'])
   scrollMe(event) {
     let v = document.getElementById('pdfview')
@@ -37,6 +44,7 @@ export class PdfviewComponent {
       //this.changePage(this.cpage - 1);
     //}
   }
+  */
 
   changePage(p) {
     this.cpage = p;
