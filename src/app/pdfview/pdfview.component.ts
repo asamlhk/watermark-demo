@@ -17,6 +17,8 @@ export class PdfviewComponent {
   pageRead = [];
   signed = false;
 
+  changingPage = false;
+
   constructor(
     public dialogRef: MatDialogRef<PdfviewComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -36,10 +38,15 @@ export class PdfviewComponent {
     }
   }
 
+ 
+
 
 
   changePage(p) {
     //this.page = p;
+    if(this.changingPage) return;
+    this.changingPage = true;
+
     this.cpage = p;
     this.pageRead[this.cpage - 1] = true;
 
@@ -50,6 +57,7 @@ export class PdfviewComponent {
     document.body.scrollTop = 1; // For Safari
     var element = document.getElementById('pdfview');
     element.scrollTop = 1; // For Chrome, Firefox, IE and Opera
+    this.changingPage = false;
   }
 
   watermark() {
