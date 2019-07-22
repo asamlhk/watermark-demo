@@ -24,6 +24,7 @@ export class PdfviewComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.src = data.url;
+    this.signed = data.signed
   }
 
   @HostListener("scroll", ['$event'])
@@ -31,22 +32,13 @@ export class PdfviewComponent {
     let v = document.getElementById('pdfview')
     if (this.cpage < this.pdf.numPages && v.scrollHeight - v.scrollTop <= v.clientHeight) {
       this.changePage(this.cpage + 1);
-
     }
-    if (this.cpage > 1 && v.scrollTop == 0) {
-      this.changePage(this.cpage - 1);
-    }
+    //if (this.cpage > 1 && v.scrollTop == 0) {
+      //this.changePage(this.cpage - 1);
+    //}
   }
 
- 
-
-
-
   changePage(p) {
-    //this.page = p;
-    if(this.changingPage) return;
-    this.changingPage = true;
-
     this.cpage = p;
     this.pageRead[this.cpage - 1] = true;
 
@@ -57,11 +49,12 @@ export class PdfviewComponent {
     document.body.scrollTop = 1; // For Safari
     var element = document.getElementById('pdfview');
     element.scrollTop = 1; // For Chrome, Firefox, IE and Opera
-    this.changingPage = false;
+
   }
 
   watermark() {
     //return
+    if (!this.signed) return;
     var can = document.getElementById('pdfview').querySelector('canvas');
     var ctx = can.getContext("2d");
     ctx.fillStyle = "rgba(0, 0, 0, 0.1)";

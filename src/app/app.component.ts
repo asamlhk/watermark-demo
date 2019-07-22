@@ -21,7 +21,8 @@ export class AppComponent {
       width: '100vw',
       height: '90vh',
       data: {
-        url: "https://www.tutorialspoint.com/angular2/angular2_tutorial.pdf"
+        url: "https://www.tutorialspoint.com/angular2/angular2_tutorial.pdf",
+        signed: this.signed
       },
       hasBackdrop: true,
     });

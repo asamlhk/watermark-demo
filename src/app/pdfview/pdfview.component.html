@@ -13,9 +13,9 @@
   </div>
     <div id="signSection">
       <span [ngStyle]="{display:readAllPages()?'block':'none'}">Please read all page for signing</span>
-      <app-sign [display]="!readAllPages()"></app-sign>
-      <span [ngStyle]="{display:readAllPages()?'none':'block'}">
-        <button   [mat-dialog-close]="true">Sign</button>
+      <span [ngStyle]="{display:!readAllPages()?'block':'none'}">
+        <app-sign [display]="!readAllPages()"></app-sign>      
+        <button [mat-dialog-close]="true">Sign</button>
       </span>
     </div>
 
