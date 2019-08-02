@@ -23,9 +23,17 @@ export class PdfviewComponent implements AfterViewInit {
   signed = false;
 
   changingPage = false;
+  timeout = 10;
 
   ngAfterViewInit() {
     const pdfview = document.getElementById('pdfview');
+    setInterval(
+      () => {
+        this.timeout != 0 ? this.timeout -= 1 : '';
+
+      }
+      , 1000
+    )
     Observable.fromEvent(pdfview, 'scroll')
       .pipe(
         debounceTime(50),
@@ -126,7 +134,7 @@ export class PdfviewComponent implements AfterViewInit {
 
 
   readAllPages() {
-    return this.pageRead.filter(x => !x).length != 0;
+    return this.timeout == 0 && this.pageRead.filter(x => !x).length == 0;
   }
 
   onNoClick() {
