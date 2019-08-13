@@ -52,14 +52,14 @@ export class PdfviewComponent implements AfterViewInit {
       htmlfields: []
 
     },
-        {
+    {
       page: 3,
       fields: [
         {
           x: 50,
           y: 100,
           style: 'holder'
-        } 
+        }
       ],
       htmlfields: []
 
@@ -155,15 +155,31 @@ export class PdfviewComponent implements AfterViewInit {
         throttle(val => interval(10))
       )
       .subscribe((event) => {
+        const offsetX = document.getElementById("pdfview").offsetLeft;
+        const offsetY = document.getElementById("pdfview").offsetTop;
+
+        console.log(
+          {
+            x: offsetX,
+            y: offsetY
+          }
+        )
         const ele = event.srcElement;
         let v = document.getElementById('pdfview');
         const fields = this.signFields.filter(x => x.page == this.cpage);
-        if (fields[0])
+        if (fields[0]) {
+
           fields[0].htmlfields.forEach(
 
-            f => f.style.top = 100 - v.scrollTop + 300 + 'px'
+
+            (f, i) => {
+              const originTop = fields[0].fields[i].y;
+              f.style.top = originTop - v.scrollTop + offsetY + 'px'
+              f.style.left = 400 + fields[0].fields[i].x + 'px'
+            }
 
           )
+        }
         if (this.cpage < this.pdf.numPages && v.scrollHeight - v.scrollTop <= v.clientHeight + 50) {
           this.changePage(this.cpage + 1);
         }
