@@ -44,6 +44,18 @@ export class PdfviewComponent implements AfterViewInit {
     ]
   ]
 
+  showSignField(page) {
+    this.signs.forEach(fs => {
+      fs.signFields.forEach(
+        f => f.style.display = 'none'
+      )
+    })
+    if (this.signs[page])
+      this.signs[page].forEach(
+        f => f.style.display = 'block'
+      )
+  }
+
   addSignField(x, y, signType) {
     const factory = this.componentFactoryResolver
       .resolveComponentFactory(SignComponent);
@@ -59,7 +71,8 @@ export class PdfviewComponent implements AfterViewInit {
     element.style.position = "absolute";
     element.style.top = y + 300 + "px";
     element.style.left = x + 300 + "px";
-    
+    element.style.display = 'none';
+
 
     this.viewContainerRef.insert(component.hostView);
 
@@ -152,6 +165,7 @@ export class PdfviewComponent implements AfterViewInit {
   changePage(p) {
     this.cpage = p;
     this.pageRead[this.cpage - 1] = true;
+    this.showSignField(this.cpage - 1)
 
     document.body.scrollTop = 1; // For Safari
     var element = document.getElementById('pdfview');
