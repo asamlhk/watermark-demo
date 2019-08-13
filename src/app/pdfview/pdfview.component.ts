@@ -1,6 +1,6 @@
 
 import * as R from 'ramda';
-import { Component, Inject, OnInit, HostListener, AfterViewInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, HostListener, AfterViewInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
 import { Observable, pipe, interval } from "rxjs";
 import 'rxjs/add/observable/fromEvent';
@@ -21,23 +21,26 @@ export class PdfviewComponent implements AfterViewInit {
   cpage = 0;
   pageRead = [];
   signed = false;
+  signfield : HTMLElement;
+
+ 
 
   changingPage = false;
   timeout = 10;
 
   ngAfterViewInit() {
+    this.signfield = document.getElementById('signHere');
     const pdfview = document.getElementById('pdfview');
     setInterval(
       () => {
         this.timeout != 0 ? this.timeout -= 1 : '';
-
       }
       , 1000
     )
     Observable.fromEvent(pdfview, 'scroll')
       .pipe(
-        debounceTime(50),
-        throttle(val => interval(50))
+        debounceTime(30),
+        throttle(val => interval(30))
       )
       .subscribe((event) => {
         console.log(event)
@@ -46,8 +49,13 @@ export class PdfviewComponent implements AfterViewInit {
           scrollH: ele.scrollHeight - ele.scrollTop,
           clientHeight: ele.clientHeight
         })
+        console.log({'signfield':this.signfield})
+        
+
+
         //scrollHeight: 1142
-        let v = document.getElementById('pdfview')
+        let v = document.getElementById('pdfview');
+        this.signfield.style.top = 200 - v.scrollTop + 'px';
         if (this.cpage < this.pdf.numPages && v.scrollHeight - v.scrollTop <= v.clientHeight + 50) {
           this.changePage(this.cpage + 1);
         }
@@ -68,21 +76,7 @@ export class PdfviewComponent implements AfterViewInit {
 
 
 
-  }
-
-
-  /*
-    @HostListener("scroll", ['$event'])
-    scrollMe(event) {
-      let v = document.getElementById('pdfview')
-      if (this.cpage < this.pdf.numPages && v.scrollHeight - v.scrollTop <= v.clientHeight) {
-        this.changePage(this.cpage + 1);
-      }
-      //if (this.cpage > 1 && v.scrollTop == 0) {
-        //this.changePage(this.cpage - 1);
-      //}
-    }
-    */
+  } 
 
   changePage(p) {
     this.cpage = p;

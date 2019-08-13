@@ -13,7 +13,7 @@ export class AppComponent {
   documents = [
     {
       name: 'document A',
-      url: 'https://www.tutorialspoint.com/angular2/angular2_tutorial.pdf',
+      url: 'https://firebasestorage.googleapis.com/v0/b/storage-5ad5a.appspot.com/o/form2.pdf?alt=media&token=83bab914-590f-4154-9770-e3275d286472',
       signed: false
     },
     {

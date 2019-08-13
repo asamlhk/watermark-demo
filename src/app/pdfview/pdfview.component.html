@@ -2,6 +2,7 @@
 	<div class="toolbar">
 		Page {{cpage}}<button mat-raised-button  [mat-dialog-close]="signed"  >Close</button> 
   </div>
+  <div id="signHere" #signhere><button>Sign here</button></div>
   <div   id="pdfview"   >
     <pdf-viewer [src]="src"
                 [original-size]="false"
