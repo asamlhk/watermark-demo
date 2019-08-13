@@ -5,7 +5,7 @@
 		<button mat-raised-button (click)="signed = true;">Sign</button>
 	</div>
   <img [src]="getImage()" 
-  *ngIf="getImage()!=null"
+   
   [ngStyle]="{'display': signed?'':'none'}"  (click)="signed = false;"/>
  
 </div>

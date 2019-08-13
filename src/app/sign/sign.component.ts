@@ -20,13 +20,15 @@ export class SignComponent {
     //backgroundColor: "rgba(0, 0, 0, 1)"
   };
 
+ 
+
   constructor(private _sanitizer: DomSanitizer) {
     
     // no-op
   }
 
   getImage() {
-     return this.signaturePad ?this._sanitizer.bypassSecurityTrustResourceUrl(this.signaturePad.toDataURL("png")): null;
+     return this.signaturePad ?this._sanitizer.bypassSecurityTrustResourceUrl(this.signaturePad.toDataURL("png")): 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
   }
 
   ngAfterViewInit() {
