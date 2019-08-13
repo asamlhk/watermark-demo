@@ -1,5 +1,7 @@
 import { Component, ViewChild, Input} from '@angular/core';
 import { SignaturePad } from 'angular2-signaturepad/signature-pad';
+import { DomSanitizer } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-sign',
   templateUrl: './sign.component.html',
@@ -7,6 +9,8 @@ import { SignaturePad } from 'angular2-signaturepad/signature-pad';
 })
 export class SignComponent {
   @Input() display;
+  signed = false;
+
 
   @ViewChild(SignaturePad, { static: false }) signaturePad: SignaturePad;
   private signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
@@ -16,8 +20,13 @@ export class SignComponent {
     //backgroundColor: "rgba(0, 0, 0, 1)"
   };
 
-  constructor() {
+  constructor(private _sanitizer: DomSanitizer) {
+    
     // no-op
+  }
+
+  getImage() {
+     return this.signaturePad ?this._sanitizer.bypassSecurityTrustResourceUrl(this.signaturePad.toDataURL("png")): null;
   }
 
   ngAfterViewInit() {
@@ -32,12 +41,12 @@ export class SignComponent {
 
   drawComplete() {
     // will be notified of szimek/signature_pad's onEnd event
-    console.log(this.signaturePad.toDataURL());
+    //console.log(this.signaturePad.toDataURL());
   }
 
   drawStart() {
     // will be notified of szimek/signature_pad's onBegin event
-    console.log('begin drawing');
+    //console.log('begin drawing');
   }
 }
 

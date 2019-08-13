@@ -20,7 +20,7 @@ import { SignaturePadModule } from 'angular2-signaturepad';
   ],
   declarations: [AppComponent, HelloComponent, PdfviewComponent, SignComponent],
   bootstrap: [AppComponent],
-  entryComponents: [PdfviewComponent],
+  entryComponents: [PdfviewComponent, SignComponent],
 
 
 })

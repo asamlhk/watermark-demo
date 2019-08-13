@@ -22,7 +22,7 @@
   width: 100%;
 }
 
-#signSection {
+app-sign {
   position: absolute;
-  bottom: 10vh;
+  top: 10px;
 }

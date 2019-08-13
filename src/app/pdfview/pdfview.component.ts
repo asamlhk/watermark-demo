@@ -1,12 +1,14 @@
 
 import * as R from 'ramda';
-import { Component, Inject, OnInit, ViewChild, HostListener, AfterViewInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, HostListener, AfterViewInit, ComponentFactoryResolver, ViewContainerRef, ComponentRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
 import { Observable, pipe, interval } from "rxjs";
 import 'rxjs/add/observable/fromEvent';
 import { debounceTime, throttle } from 'rxjs/operators';
 import { PDFDocumentProxy } from 'ng2-pdf-viewer';
 import { PDFAnnotationData } from 'pdfjs-dist';
+import { SignComponent } from '../sign/sign.component';
+
 
 @Component({
   selector: 'app-pdfview',
@@ -22,50 +24,62 @@ export class PdfviewComponent implements AfterViewInit {
   signed = false;
   signfield: HTMLElement;
   readonly dpiRatio = 96 / 72;
-
+  viewContainerRef;
 
   changingPage = false;
   timeout = 10;
+  signFields = [
+    [
+      {
+        x: 100,
+        y: 200
+      } 
+    ]
+  ]
+
+  addSignField(x, y) {
+    const factory = this.componentFactoryResolver
+      .resolveComponentFactory(SignComponent);
+    const component: ComponentRef<SignComponent> = factory
+      .create(this.viewContainerRef.parentInjector);
+
+    component.instance.display = true;
+
+
+    let element: HTMLElement = <HTMLElement>component.location.nativeElement;
+
+    console.log(element)
+    element.style.position = "absolute";
+    element.style.top = y + "px";
+    element.style.left = x + "px";
+
+    this.viewContainerRef.insert(component.hostView)
+  }
 
   loadComplete(pdf: PDFDocumentProxy): void {
     for (let i = 1; i <= pdf.numPages; i++) {
 
       // track the current page
-      
+
       let currentPage = null;
       pdf.getPage(i).then(p => {
         currentPage = p;
-
         // get the annotations of the current page
         return p.getAnnotations();
       }).then(ann => {
 
-        // ugly cast due to missing typescript definitions
-        // please contribute to complete @types/pdfjs-dist
         const annotations = (<any>ann) as PDFAnnotationData[];
-console.log(i)
+        console.log(i)
         annotations
-          //.filter(a => a.subtype === 'Widget') // get the form field annotation only
+
           .forEach(a => {
 
-            // get the rectangle that represent the single field
-            // and resize it according to the current DPI
-            const fieldRect = currentPage.getViewport(this.dpiRatio)
-              .convertToViewportRectangle(a.rect);
-            console.log({
-              'page': i,
-              'widget': a
-            })
-
-            // add the corresponding input
-            //this.addInput(a, fieldRect);
           });
       });
     }
   }
 
   ngAfterViewInit() {
-    this.signfield = document.getElementById('signHere');
     const pdfview = document.getElementById('pdfview');
     setInterval(
       () => {
@@ -74,13 +88,13 @@ console.log(i)
     );
     Observable.fromEvent(pdfview, 'scroll')
       .pipe(
-        debounceTime(30),
-        throttle(val => interval(30))
+        //debounceTime(30),
+        throttle(val => interval(10))
       )
       .subscribe((event) => {
         const ele = event.srcElement;
         let v = document.getElementById('pdfview');
-        this.signfield.style.top = 200 - v.scrollTop + 'px';
+
         if (this.cpage < this.pdf.numPages && v.scrollHeight - v.scrollTop <= v.clientHeight + 50) {
           this.changePage(this.cpage + 1);
         }
@@ -94,12 +108,13 @@ console.log(i)
 
   constructor(
     public dialogRef: MatDialogRef<PdfviewComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private componentFactoryResolver: ComponentFactoryResolver,
+    @Inject(ViewContainerRef) viewContainerRef,
   ) {
+    this.viewContainerRef = viewContainerRef;
     this.src = data.url;
     this.signed = data.signed;
-
-
 
   }
 
@@ -107,8 +122,15 @@ console.log(i)
     this.cpage = p;
     this.pageRead[this.cpage - 1] = true;
 
+    this.signFields[this.cpage - 1].forEach(
+      p => {
+        this.addSignField(p.x, p.y);   
+      }
+    )
+      
+
     //setTimeout(() => {
-      //this.watermark();
+    //this.watermark();
     //}, 300)
     //this.watermark();
     document.body.scrollTop = 1; // For Safari
