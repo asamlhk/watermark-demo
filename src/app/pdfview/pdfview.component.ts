@@ -32,27 +32,34 @@ export class PdfviewComponent implements AfterViewInit {
   signFields = [
     [
       {
-        x: 100,
-        y: 100
+        x: 200,
+        y: 100,
+        style: 'holder'
+      },
+      {
+        x: 400,
+        y: 100,
+        style: 'insured'
       }
     ]
   ]
 
-  addSignField(x, y) {
+  addSignField(x, y, signType) {
     const factory = this.componentFactoryResolver
       .resolveComponentFactory(SignComponent);
     const component: ComponentRef<SignComponent> = factory
       .create(this.viewContainerRef.parentInjector);
 
     component.instance.display = true;
-
+    component.instance.signType = signType;
 
     let element: HTMLElement = <HTMLElement>component.location.nativeElement;
 
 
-    element.style.position = "relative";
-    element.style.top = y + "px";
-    element.style.left = x + "px";
+    element.style.position = "absolute";
+    element.style.top = y + 300 + "px";
+    element.style.left = x + 300 + "px";
+    
 
     this.viewContainerRef.insert(component.hostView);
 
@@ -70,11 +77,11 @@ export class PdfviewComponent implements AfterViewInit {
         // get the annotations of the current page
         if (this.signFields[i - 1]) {
           const fields = this.signFields[i - 1].map(
-            p => this.addSignField(p.x, p.y)
+            p => this.addSignField(p.x, p.y, p.style)
 
           )
           this.signs.push({
-            page: i-1,
+            page: i - 1,
             signfields: fields
           });
         }
@@ -82,7 +89,7 @@ export class PdfviewComponent implements AfterViewInit {
       }).then(ann => {
 
         const annotations = (<any>ann) as PDFAnnotationData[];
-         
+
         annotations
 
           .forEach(a => {
@@ -90,9 +97,9 @@ export class PdfviewComponent implements AfterViewInit {
           });
       });
 
-      
+
     }
-    console.log({'signs':this.signs})
+    console.log({ 'signs': this.signs })
   }
 
   ngAfterViewInit() {
@@ -114,7 +121,7 @@ export class PdfviewComponent implements AfterViewInit {
         fields.forEach(
           fs => {
             fs.signfields.forEach(
-              f=>f.style.top = 100 - v.scrollTop + 'px'
+              f => f.style.top = 100 - v.scrollTop + 300 + 'px'
             )
             //f.style.top = v.scrollTop + 'px'
           }

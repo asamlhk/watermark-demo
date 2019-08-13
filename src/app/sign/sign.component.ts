@@ -11,6 +11,9 @@ export class SignComponent {
   @Input() display;
   signed = false;
   imagedata;
+  
+  @Input() signType;
+
 
 
   @ViewChild(SignaturePad, { static: false }) signaturePad: SignaturePad;
