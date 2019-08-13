@@ -28,11 +28,12 @@ export class PdfviewComponent implements AfterViewInit {
 
   changingPage = false;
   timeout = 10;
+  signs = []
   signFields = [
     [
       {
         x: 100,
-        y: 200
+        y: 100
       }
     ]
   ]
@@ -49,7 +50,7 @@ export class PdfviewComponent implements AfterViewInit {
     let element: HTMLElement = <HTMLElement>component.location.nativeElement;
 
 
-    element.style.position = "absolute";
+    element.style.position = "relative";
     element.style.top = y + "px";
     element.style.left = x + "px";
 
@@ -67,129 +68,133 @@ export class PdfviewComponent implements AfterViewInit {
       pdf.getPage(i).then(p => {
         currentPage = p;
         // get the annotations of the current page
-        const fields = this.signFields[i - 1].map(
-          p =>
-            this.addSignField(p.x, p.y)
-          
-        )
+        if (this.signFields[i - 1]) {
+          const fields = this.signFields[i - 1].map(
+            p => this.addSignField(p.x, p.y)
 
-      console.log({
-        'page': i,
-        "field": fields
+          )
+          this.signs.push({
+            page: i-1,
+            signfields: fields
+          });
+        }
+        return p.getAnnotations();
+      }).then(ann => {
+
+        const annotations = (<any>ann) as PDFAnnotationData[];
+         
+        annotations
+
+          .forEach(a => {
+
+          });
       });
 
-      return p.getAnnotations();
-    }).then(ann => {
-
-      const annotations = (<any>ann) as PDFAnnotationData[];
-      console.log(i)
-      annotations
-
-        .forEach(a => {
-
-        });
-    });
+      
+    }
+    console.log({'signs':this.signs})
   }
-}
 
-ngAfterViewInit() {
-  const pdfview = document.getElementById('pdfview');
-  setInterval(
-    () => {
-      this.timeout != 0 ? this.timeout -= 1 : '';
-    }, 1000
-  );
-  Observable.fromEvent(pdfview, 'scroll')
-    .pipe(
-      //debounceTime(30),
-      throttle(val => interval(10))
-    )
-    .subscribe((event) => {
-      const ele = event.srcElement;
-      let v = document.getElementById('pdfview');
+  ngAfterViewInit() {
+    const pdfview = document.getElementById('pdfview');
+    setInterval(
+      () => {
+        this.timeout != 0 ? this.timeout -= 1 : '';
+      }, 1000
+    );
+    Observable.fromEvent(pdfview, 'scroll')
+      .pipe(
+        //debounceTime(30),
+        throttle(val => interval(10))
+      )
+      .subscribe((event) => {
+        const ele = event.srcElement;
+        let v = document.getElementById('pdfview');
+        const fields = this.signs.filter(x => x.page = this.cpage);
+        fields.forEach(
+          fs => {
+            fs.signfields.forEach(
+              f=>f.style.top = 100 - v.scrollTop + 'px'
+            )
+            //f.style.top = v.scrollTop + 'px'
+          }
+        )
+        if (this.cpage < this.pdf.numPages && v.scrollHeight - v.scrollTop <= v.clientHeight + 50) {
+          this.changePage(this.cpage + 1);
+        }
 
-      if (this.cpage < this.pdf.numPages && v.scrollHeight - v.scrollTop <= v.clientHeight + 50) {
-        this.changePage(this.cpage + 1);
-      }
-
-      if (this.cpage > 1 && v.scrollTop == 0) {
-        this.changePage(this.cpage - 1);
-      }
-    });
-}
+        if (this.cpage > 1 && v.scrollTop == 0) {
+          this.changePage(this.cpage - 1);
+        }
+      });
+  }
 
 
-constructor(
-  public dialogRef: MatDialogRef < PdfviewComponent >,
+  constructor(
+    public dialogRef: MatDialogRef<PdfviewComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-  private componentFactoryResolver: ComponentFactoryResolver,
+    private componentFactoryResolver: ComponentFactoryResolver,
     @Inject(ViewContainerRef) viewContainerRef,
   ) {
-  this.viewContainerRef = viewContainerRef;
-  this.src = data.url;
-  this.signed = data.signed;
+    this.viewContainerRef = viewContainerRef;
+    this.src = data.url;
+    this.signed = data.signed;
 
-}
-
-changePage(p) {
-  this.cpage = p;
-  this.pageRead[this.cpage - 1] = true;
-
-
-
-  //setTimeout(() => {
-  //this.watermark();
-  //}, 300)
-  //this.watermark();
-  document.body.scrollTop = 1; // For Safari
-  var element = document.getElementById('pdfview');
-  element.scrollTop = 1; // For Chrome, Firefox, IE and Opera
-
-}
-
-watermark() {
-  //return
-  if (!this.signed) return;
-  var can = document.getElementById('pdfview').querySelector('canvas');
-  var ctx = can.getContext("2d");
-  ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
-  ctx.font = "30px Arial";
-  //ctx.clearRect(0,0,can.width, can.height);
-  ctx.rotate(-45);
-  for (var i = -100; i < 100; i++) {
-    for (var j = -100; j < 100; j++) {
-      ctx.fillText("Readonly", 300 * i, 200 * j);
-    }
   }
-  ctx.rotate(45);
-  ctx.restore();
-}
 
-update() {
-  this.pageRead[this.cpage - 1] = true;
-  this.cpage = this.cpage;
-  this.watermark();
-}
+  changePage(p) {
+    this.cpage = p;
+    this.pageRead[this.cpage - 1] = true;
 
-callBackFn(pdf) {
-  // do anything with "pdf"
-  this.pdf = pdf;
-  this.pageRead = R.range(0, pdf.numPages).map(
-    x => false
-  )
-  this.pageRead[0] = true;
-  this.changePage(1);
-  this.loadComplete(pdf);
-}
+    document.body.scrollTop = 1; // For Safari
+    var element = document.getElementById('pdfview');
+    element.scrollTop = 1; // For Chrome, Firefox, IE and Opera
+
+  }
+
+  watermark() {
+    //return
+    if (!this.signed) return;
+    var can = document.getElementById('pdfview').querySelector('canvas');
+    var ctx = can.getContext("2d");
+    ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+    ctx.font = "30px Arial";
+    //ctx.clearRect(0,0,can.width, can.height);
+    ctx.rotate(-45);
+    for (var i = -100; i < 100; i++) {
+      for (var j = -100; j < 100; j++) {
+        ctx.fillText("Readonly", 300 * i, 200 * j);
+      }
+    }
+    ctx.rotate(45);
+    ctx.restore();
+  }
+
+  update() {
+    this.pageRead[this.cpage - 1] = true;
+    this.cpage = this.cpage;
+    this.watermark();
+  }
+
+  callBackFn(pdf) {
+    // do anything with "pdf"
+    this.pdf = pdf;
+    this.pageRead = R.range(0, pdf.numPages).map(
+      x => false
+    )
+    this.pageRead[0] = true;
+    this.changePage(1);
+    this.loadComplete(pdf);
+  }
 
 
-readAllPages() {
-  return this.timeout == 0 && this.pageRead.filter(x => !x).length == 0;
-}
+  readAllPages() {
+    return this.timeout == 0 && this.pageRead.filter(x => !x).length == 0;
+  }
 
-onNoClick() {
-  this.dialogRef.close();
-}
+  onNoClick() {
+    this.dialogRef.close();
+  }
 
 
 

@@ -3,13 +3,11 @@
    
 }
 
-#signHere{
-  position: relative;
-  z-index: 1;
-  top: 200px;
-  left: 100px;
+.pdfview {
+  z-index: 2;
 }
 
+ 
 :host ::ng-deep .pdfViewer .page .canvasWrapper {
     margin-top: 10px;
     border: 1px solid #ccc;

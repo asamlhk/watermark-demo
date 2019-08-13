@@ -1,11 +1,11 @@
 <div [ngStyle]="{'display': display?'':'none'}">
-	<div id="spdiv" [ngStyle]="{'display': !signed?'':'none'}">
+	<div id="spdiv"  [ngStyle]="{'display': !signed && imagedata?'':'none'}">
 		<signature-pad [options]="signaturePadOptions" (onBeginEvent)="drawStart()" (onEndEvent)="drawComplete()">
 		</signature-pad>
-		<button mat-raised-button (click)="signed = true;">Sign</button>
+		<button mat-raised-button (click)="signed = true;">Sign</button>   
 	</div>
-  <img [src]="getImage()" 
-   
-  [ngStyle]="{'display': signed?'':'none'}"  (click)="signed = false;"/>
+  <img [src]="imagedata"   
+  [ngStyle]="{'display': signed?'':'none'}"  (click)="signaturePad.clear();signed = false;"/>
+  <button *ngIf="!imagedata" mat-raised-button (click)="imagedata='ddd'">Sign Here</button>
  
 </div>

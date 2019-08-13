@@ -10,6 +10,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class SignComponent {
   @Input() display;
   signed = false;
+  imagedata;
 
 
   @ViewChild(SignaturePad, { static: false }) signaturePad: SignaturePad;
@@ -28,7 +29,7 @@ export class SignComponent {
   }
 
   getImage() {
-     return this.signaturePad ?this._sanitizer.bypassSecurityTrustResourceUrl(this.signaturePad.toDataURL("png")): 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
+     return this.signaturePad ?this._sanitizer.bypassSecurityTrustResourceUrl(this.signaturePad.toDataURL("png")): null;
   }
 
   ngAfterViewInit() {
@@ -44,6 +45,7 @@ export class SignComponent {
   drawComplete() {
     // will be notified of szimek/signature_pad's onEnd event
     //console.log(this.signaturePad.toDataURL());
+    this.imagedata = this._sanitizer.bypassSecurityTrustResourceUrl(this.signaturePad.toDataURL("png"));
   }
 
   drawStart() {
