@@ -109,7 +109,7 @@ console.log(i)
 
     //setTimeout(() => {
       //this.watermark();
-    /}, 300)
+    //}, 300)
     //this.watermark();
     document.body.scrollTop = 1; // For Safari
     var element = document.getElementById('pdfview');
