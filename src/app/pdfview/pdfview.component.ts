@@ -22,38 +22,68 @@ export class PdfviewComponent implements AfterViewInit {
   cpage = 0;
   pageRead = [];
   signed = false;
-  signfield: HTMLElement;
+
   readonly dpiRatio = 96 / 72;
   viewContainerRef;
 
   changingPage = false;
   timeout = 10;
-  signs = []
+
   signFields = [
-    [
-      {
-        x: 200,
-        y: 100,
-        style: 'holder'
-      },
-      {
-        x: 400,
-        y: 100,
-        style: 'insured'
-      }
-    ]
+    {
+      page: 1,
+      fields: [],
+      htmlfields: []
+    },
+    {
+      page: 2,
+      fields: [
+        {
+          x: 50,
+          y: 100,
+          style: 'holder'
+        },
+        {
+          x: 300,
+          y: 100,
+          style: 'insured'
+        }
+      ],
+      htmlfields: []
+
+    },
+        {
+      page: 3,
+      fields: [
+        {
+          x: 50,
+          y: 100,
+          style: 'holder'
+        } 
+      ],
+      htmlfields: []
+
+    }
   ]
 
   showSignField(page) {
-    this.signs.forEach(fs => {
-      fs.signFields.forEach(
+
+    this.signFields.forEach(fs => {
+      fs.htmlfields.forEach(
         f => f.style.display = 'none'
       )
-    })
-    if (this.signs[page])
-      this.signs[page].forEach(
+    });
+
+
+    const fs = this.signFields.filter(p => p.page === page);
+
+    if (fs[0]) {
+      fs[0].htmlfields.forEach(
         f => f.style.display = 'block'
-      )
+      );
+    }
+
+
   }
 
   addSignField(x, y, signType) {
@@ -87,17 +117,7 @@ export class PdfviewComponent implements AfterViewInit {
       let currentPage = null;
       pdf.getPage(i).then(p => {
         currentPage = p;
-        // get the annotations of the current page
-        if (this.signFields[i - 1]) {
-          const fields = this.signFields[i - 1].map(
-            p => this.addSignField(p.x, p.y, p.style)
 
-          )
-          this.signs.push({
-            page: i - 1,
-            signfields: fields
-          });
-        }
         return p.getAnnotations();
       }).then(ann => {
 
@@ -109,10 +129,17 @@ export class PdfviewComponent implements AfterViewInit {
 
           });
       });
-
-
     }
-    console.log({ 'signs': this.signs })
+
+    this.signFields.forEach(
+      fs => {
+        fs.htmlfields = fs.fields.map(
+          f => this.addSignField(f.x, f.y, f.style)
+        )
+
+      }
+    )
+    this.changePage(1);
   }
 
   ngAfterViewInit() {
@@ -130,15 +157,13 @@ export class PdfviewComponent implements AfterViewInit {
       .subscribe((event) => {
         const ele = event.srcElement;
         let v = document.getElementById('pdfview');
-        const fields = this.signs.filter(x => x.page = this.cpage);
-        fields.forEach(
-          fs => {
-            fs.signfields.forEach(
-              f => f.style.top = 100 - v.scrollTop + 300 + 'px'
-            )
-            //f.style.top = v.scrollTop + 'px'
-          }
-        )
+        const fields = this.signFields.filter(x => x.page == this.cpage);
+        if (fields[0])
+          fields[0].htmlfields.forEach(
+
+            f => f.style.top = 100 - v.scrollTop + 300 + 'px'
+
+          )
         if (this.cpage < this.pdf.numPages && v.scrollHeight - v.scrollTop <= v.clientHeight + 50) {
           this.changePage(this.cpage + 1);
         }
@@ -165,7 +190,7 @@ export class PdfviewComponent implements AfterViewInit {
   changePage(p) {
     this.cpage = p;
     this.pageRead[this.cpage - 1] = true;
-    this.showSignField(this.cpage - 1)
+    this.showSignField(this.cpage);
 
     document.body.scrollTop = 1; // For Safari
     var element = document.getElementById('pdfview');

@@ -12,13 +12,13 @@ export class AppComponent {
   signed = false;
   documents = [
     {
-      name: 'document A',
-      url: 'https://firebasestorage.googleapis.com/v0/b/storage-5ad5a.appspot.com/o/form2.pdf?alt=media&token=83bab914-590f-4154-9770-e3275d286472',
+      name: 'La Vie',
+      url: 'https://firebasestorage.googleapis.com/v0/b/storage-5ad5a.appspot.com/o/TC7%20-%20La%20Vie%20(EN%2C%20HK).pdf?alt=media&token=cf242713-5862-44f0-882f-77f4dbb9b145',
       signed: false
     },
     {
       name: 'document B',
-      url: 'https://firebasestorage.googleapis.com/v0/b/storage-5ad5a.appspot.com/o/form3.pdf?alt=media&token=8e3a3966-02a0-4764-8a97-df7079c24074',
+      url: 'https://firebasestorage.googleapis.com/v0/b/storage-5ad5a.appspot.com/o/IND_3220082170_EPOSAPP_NA_NA_20190618.pdf?alt=media&token=8a3b70cd-6aad-48df-92ed-05dbd53e7bcb',
       signed: false
     }
   ]
