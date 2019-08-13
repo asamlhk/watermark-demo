@@ -18,7 +18,7 @@ export class AppComponent {
     },
     {
       name: 'document B',
-      url: 'https://www.tutorialspoint.com/5g/5g_tutorial.pdf',
+      url: 'https://firebasestorage.googleapis.com/v0/b/storage-5ad5a.appspot.com/o/form3.pdf?alt=media&token=8e3a3966-02a0-4764-8a97-df7079c24074',
       signed: false
     }
   ]

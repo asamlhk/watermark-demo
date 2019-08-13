@@ -4,10 +4,9 @@ import { Component, Inject, OnInit, ViewChild, HostListener, AfterViewInit } fro
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
 import { Observable, pipe, interval } from "rxjs";
 import 'rxjs/add/observable/fromEvent';
-//import 'rxjs/add/observable/throttle';
-//import 'rxjs/add/observable/debounceTime';
 import { debounceTime, throttle } from 'rxjs/operators';
-
+import { PDFDocumentProxy } from 'ng2-pdf-viewer';
+import { PDFAnnotationData } from 'pdfjs-dist';
 
 @Component({
   selector: 'app-pdfview',
@@ -16,17 +15,54 @@ import { debounceTime, throttle } from 'rxjs/operators';
 })
 export class PdfviewComponent implements AfterViewInit {
   src = '';
-  //page = 1;
+
   pdf;
   cpage = 0;
   pageRead = [];
   signed = false;
-  signfield : HTMLElement;
+  signfield: HTMLElement;
+  readonly dpiRatio = 96 / 72;
 
- 
 
   changingPage = false;
   timeout = 10;
+
+  loadComplete(pdf: PDFDocumentProxy): void {
+    for (let i = 1; i <= pdf.numPages; i++) {
+
+      // track the current page
+      
+      let currentPage = null;
+      pdf.getPage(i).then(p => {
+        currentPage = p;
+
+        // get the annotations of the current page
+        return p.getAnnotations();
+      }).then(ann => {
+
+        // ugly cast due to missing typescript definitions
+        // please contribute to complete @types/pdfjs-dist
+        const annotations = (<any>ann) as PDFAnnotationData[];
+console.log(i)
+        annotations
+          //.filter(a => a.subtype === 'Widget') // get the form field annotation only
+          .forEach(a => {
+
+            // get the rectangle that represent the single field
+            // and resize it according to the current DPI
+            const fieldRect = currentPage.getViewport(this.dpiRatio)
+              .convertToViewportRectangle(a.rect);
+            console.log({
+              'page': i,
+              'widget': a
+            })
+
+            // add the corresponding input
+            //this.addInput(a, fieldRect);
+          });
+      });
+    }
+  }
 
   ngAfterViewInit() {
     this.signfield = document.getElementById('signHere');
@@ -34,26 +70,15 @@ export class PdfviewComponent implements AfterViewInit {
     setInterval(
       () => {
         this.timeout != 0 ? this.timeout -= 1 : '';
-      }
-      , 1000
-    )
+      }, 1000
+    );
     Observable.fromEvent(pdfview, 'scroll')
       .pipe(
         debounceTime(30),
         throttle(val => interval(30))
       )
       .subscribe((event) => {
-        console.log(event)
-        const ele = event.srcElement
-        console.log({
-          scrollH: ele.scrollHeight - ele.scrollTop,
-          clientHeight: ele.clientHeight
-        })
-        console.log({'signfield':this.signfield})
-        
-
-
-        //scrollHeight: 1142
+        const ele = event.srcElement;
         let v = document.getElementById('pdfview');
         this.signfield.style.top = 200 - v.scrollTop + 'px';
         if (this.cpage < this.pdf.numPages && v.scrollHeight - v.scrollTop <= v.clientHeight + 50) {
@@ -63,7 +88,7 @@ export class PdfviewComponent implements AfterViewInit {
         if (this.cpage > 1 && v.scrollTop == 0) {
           this.changePage(this.cpage - 1);
         }
-      })
+      });
   }
 
 
@@ -76,15 +101,15 @@ export class PdfviewComponent implements AfterViewInit {
 
 
 
-  } 
+  }
 
   changePage(p) {
     this.cpage = p;
     this.pageRead[this.cpage - 1] = true;
 
-    setTimeout(() => {
-      this.watermark();
-    }, 300)
+    //setTimeout(() => {
+      //this.watermark();
+    /}, 300)
     //this.watermark();
     document.body.scrollTop = 1; // For Safari
     var element = document.getElementById('pdfview');
@@ -124,6 +149,7 @@ export class PdfviewComponent implements AfterViewInit {
     )
     this.pageRead[0] = true;
     this.changePage(1);
+    this.loadComplete(pdf);
   }
 
 
