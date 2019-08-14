@@ -22,6 +22,7 @@ export class PdfviewComponent implements AfterViewInit {
   cpage = 0;
   pageRead = [];
   signed = false;
+  page = 1;
 
   readonly dpiRatio = 96 / 72;
 
@@ -32,15 +33,15 @@ export class PdfviewComponent implements AfterViewInit {
 
   signFields = [
     {
-      page: 23,
-      x: 0,
+      page: 15,
+      x: 200,
       y: 400,
       style: 'page 1',
 
     },
     {
-      page: 2,
-      x: 100,
+      page: 15,
+      x: 400,
       y: 400,
       style: 'page 1 =2'
     }
