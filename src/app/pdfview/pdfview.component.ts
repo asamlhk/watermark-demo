@@ -1,6 +1,6 @@
 
 import * as R from 'ramda';
-import { Component, Inject, OnInit, ViewChild, HostListener, AfterViewInit, ComponentFactoryResolver, ViewContainerRef, ComponentRef } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, HostListener, AfterViewInit, ComponentFactoryResolver, ViewContainerRef, ComponentRef, ElementRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
 import { Observable, pipe, interval } from "rxjs";
 import 'rxjs/add/observable/fromEvent';
@@ -24,7 +24,8 @@ export class PdfviewComponent implements AfterViewInit {
   signed = false;
 
   readonly dpiRatio = 96 / 72;
-  viewContainerRef;
+
+  @ViewChild("vc", { read: ViewContainerRef }) vc: ViewContainerRef;
 
   changingPage = false;
   timeout = 10;
@@ -44,8 +45,8 @@ export class PdfviewComponent implements AfterViewInit {
           style: 'holder'
         },
         {
-          x: 0,
-          y: 100,
+          x: 100,
+          y: 0,
           style: 'insured'
         }
       ],
@@ -90,7 +91,7 @@ export class PdfviewComponent implements AfterViewInit {
     const factory = this.componentFactoryResolver
       .resolveComponentFactory(SignComponent);
     const component: ComponentRef<SignComponent> = factory
-      .create(this.viewContainerRef.parentInjector);
+      .create(this.vc.parentInjector);
 
     component.instance.display = true;
     component.instance.signType = signType;
@@ -99,12 +100,12 @@ export class PdfviewComponent implements AfterViewInit {
 
 
     element.style.position = "absolute";
-    element.style.top = y   + "px";
-    element.style.left = x  + "px";
+    element.style.top = y + "px";
+    element.style.left = x + "px";
     element.style.display = 'none';
 
 
-    this.viewContainerRef.insert(component.hostView);
+    this.vc.insert(component.hostView);
 
     return element;
   }
@@ -124,10 +125,10 @@ export class PdfviewComponent implements AfterViewInit {
         const annotations = (<any>ann) as PDFAnnotationData[];
 
         annotations
-          .filter(x => x.subtype=='link')
+          .filter(x => x.subtype == 'link')
 
           .forEach(a => {
-            
+
 
           });
       });
@@ -157,15 +158,10 @@ export class PdfviewComponent implements AfterViewInit {
         throttle(val => interval(10))
       )
       .subscribe((event) => {
-        const offsetX = document.getElementById("pdfview").offsetLeft;
-        const offsetY = document.getElementById("pdfview").offsetTop;
+        const offsetX = 0//document.getElementById("pdfview").offsetLeft;
+        const offsetY = 0//document.getElementById("pdfview").offsetTop;
 
-        console.log(
-          {
-            x: offsetX,
-            y: offsetY
-          }
-        )
+
         const ele = event.srcElement;
         let v = document.getElementById('pdfview');
         const fields = this.signFields.filter(x => x.page == this.cpage);
@@ -177,7 +173,7 @@ export class PdfviewComponent implements AfterViewInit {
             (f, i) => {
               const originTop = fields[0].fields[i].y;
               f.style.top = originTop - v.scrollTop + offsetY + 'px'
-              f.style.left = 400 + fields[0].fields[i].x + 'px'
+              f.style.left = fields[0].fields[i].x + 'px'
             }
 
           )
@@ -190,7 +186,7 @@ export class PdfviewComponent implements AfterViewInit {
         if (this.cpage > 1 && v.scrollTop == 0) {
           this.changePage(this.cpage - 1);
         }
-        
+        */
       });
   }
 
@@ -199,9 +195,9 @@ export class PdfviewComponent implements AfterViewInit {
     public dialogRef: MatDialogRef<PdfviewComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private componentFactoryResolver: ComponentFactoryResolver,
-    @Inject(ViewContainerRef) viewContainerRef,
+
   ) {
-    this.viewContainerRef = viewContainerRef;
+
     this.src = data.url;
     this.signed = data.signed;
 
