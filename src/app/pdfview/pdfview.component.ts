@@ -33,61 +33,37 @@ export class PdfviewComponent implements AfterViewInit {
   signFields = [
     {
       page: 1,
-      fields: [],
-      htmlfields: []
-    },
-    {
-      page: 2,
-      fields: [
-        {
-          x: 0,
-          y: 0,
-          style: 'holder'
-        },
-        {
-          x: 100,
-          y: 0,
-          style: 'insured'
-        }
-      ],
-      htmlfields: []
+      x: 0,
+      y: 400,
+      style: 'holder',
 
     },
     {
-      page: 3,
-      fields: [
-        {
-          x: 50,
-          y: 100,
-          style: 'holder'
-        }
-      ],
-      htmlfields: []
-
+      page: 1,
+      x: 100,
+      y: 400,
+      style: 'insured'
     }
-  ]
+  ];
 
   showSignField(page) {
 
-    this.signFields.forEach(fs => {
-      fs.htmlfields.forEach(
-        f => f.style.display = 'none'
-      )
-    });
+    this.signFields.filter(f => f.htmlfield).forEach(
+      f => f.htmlfield.style.display = 'none'
 
+    );
 
-    const fs = this.signFields.filter(p => p.page === page);
+    this.signFields.filter(f => f.htmlfield && f.page === page).forEach(
+      f => f.htmlfield.style.display = 'block'
 
-    if (fs[0]) {
-      fs[0].htmlfields.forEach(
-        f => f.style.display = 'block'
-      );
-    }
+    );
+
 
 
   }
 
   addSignField(x, y, signType) {
+
     const factory = this.componentFactoryResolver
       .resolveComponentFactory(SignComponent);
     const component: ComponentRef<SignComponent> = factory
@@ -102,7 +78,7 @@ export class PdfviewComponent implements AfterViewInit {
     element.style.position = "absolute";
     element.style.top = y + "px";
     element.style.left = x + "px";
-    element.style.display = 'none';
+    //element.style.display = 'none';
 
 
     this.vc.insert(component.hostView);
@@ -111,6 +87,7 @@ export class PdfviewComponent implements AfterViewInit {
   }
 
   loadComplete(pdf: PDFDocumentProxy): void {
+
     for (let i = 1; i <= pdf.numPages; i++) {
 
       // track the current page
@@ -124,25 +101,37 @@ export class PdfviewComponent implements AfterViewInit {
 
         const annotations = (<any>ann) as PDFAnnotationData[];
 
-        annotations
-          .filter(x => x.subtype == 'link')
+        const sf = annotations
 
-          .forEach(a => {
-
-
+          .map(a => {
+            return {
+              page: i,
+              x: a.rect[0],
+              y: a.rect[1],
+              style: 'demo'
+            }
           });
+
+        this.signFields = this.signFields.concat(sf)
+        
       });
+
     }
 
-    this.signFields.forEach(
-      fs => {
-        fs.htmlfields = fs.fields.map(
-          f => this.addSignField(f.x, f.y, f.style)
-        )
 
-      }
-    )
-    this.changePage(1);
+
+    setTimeout(
+      () => {
+        console.log({
+          bf: this.signFields
+        })
+        this.signFields.forEach(f => f.htmlfield = this.addSignField(f.x, f.y, f.style));
+        console.log({
+          ft: this.signFields
+        })
+      }, 1000);
+
+
   }
 
   ngAfterViewInit() {
@@ -165,24 +154,24 @@ export class PdfviewComponent implements AfterViewInit {
         const ele = event.srcElement;
         let v = document.getElementById('pdfview');
         const fields = this.signFields.filter(x => x.page == this.cpage);
-        if (fields[0]) {
-
-          fields[0].htmlfields.forEach(
 
 
-            (f, i) => {
-              const originTop = fields[0].fields[i].y;
-              f.style.top = originTop - v.scrollTop + offsetY + 'px'
-              f.style.left = fields[0].fields[i].x + 'px'
-            }
+        fields.forEach(
 
-          )
-        }
+
+          f => {
+
+            f.htmlfield.style.top = f.y - v.scrollTop + offsetY + 'px'
+            f.htmlfield.style.left = f.x + 'px'
+          }
+
+        )
+
         /*
         if (this.cpage < this.pdf.numPages && v.scrollHeight - v.scrollTop <= v.clientHeight + 50) {
           this.changePage(this.cpage + 1);
         }
-
+   
         if (this.cpage > 1 && v.scrollTop == 0) {
           this.changePage(this.cpage - 1);
         }

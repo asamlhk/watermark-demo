@@ -41,7 +41,7 @@ export class SignComponent {
     this.signaturePad.clear(); // invoke functions from szimek/signature_pad API
     let ele: any = document.getElementsByTagName("canvas")[0]
     let ctx = ele.getContext("2d");
-    console.log(ctx)
+ 
  
   }
 
