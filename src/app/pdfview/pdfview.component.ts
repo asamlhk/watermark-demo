@@ -34,15 +34,15 @@ export class PdfviewComponent implements AfterViewInit {
   signFields = [
     {
       page: 1,
-      x: 300,
-      y: 1000,
+      x: 0,
+      y: 0,
       style: 'page 1',
 
     },
     {
       page: 1,
-      x: 600,
-      y: 1000,
+      x: 3,
+      y: 0,
       style: 'page 1 =2'
     },
         {
