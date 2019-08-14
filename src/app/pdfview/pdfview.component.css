@@ -3,6 +3,9 @@
    
 }
 
+.pdf-container {
+  width: 100%
+}
 #pdfview {
   z-index: 2;
   position: relative;
