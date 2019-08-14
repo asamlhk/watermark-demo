@@ -17,7 +17,7 @@ export class AppComponent {
       signed: false
     },
     {
-      name: 'document B',
+      name: 'Application F',
       url: 'https://firebasestorage.googleapis.com/v0/b/storage-5ad5a.appspot.com/o/IND_3220082170_EPOSAPP_NA_NA_20190618.pdf?alt=media&token=8a3b70cd-6aad-48df-92ed-05dbd53e7bcb',
       signed: false
     }
