@@ -32,14 +32,14 @@ export class PdfviewComponent implements AfterViewInit {
 
   signFields = [
     {
-      page: 1,
+      page: 23,
       x: 0,
       y: 400,
       style: 'page 1',
 
     },
     {
-      page: 1,
+      page: 2,
       x: 100,
       y: 400,
       style: 'page 1 =2'
@@ -108,12 +108,12 @@ export class PdfviewComponent implements AfterViewInit {
               page: i,
               x: a.rect[0],
               y: a.rect[1],
-              style: 'demo'
+              style: 'from annotation'
             }
           });
 
         this.signFields = this.signFields.concat(sf)
-        
+
       });
 
     }
@@ -129,6 +129,7 @@ export class PdfviewComponent implements AfterViewInit {
         console.log({
           ft: this.signFields
         })
+        this.changePage(1)
       }, 1000);
 
 
