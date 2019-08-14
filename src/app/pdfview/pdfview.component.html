@@ -1,6 +1,9 @@
 <div class="pdf-container">
 	<div class="toolbar">
-		Page {{cpage}}<button mat-raised-button  [mat-dialog-close]="signed"  >Close</button> 
+		<button mat-raised-button  (click)="changePage(cpage-1)" ><<</button> 
+    Page {{cpage}}
+    <button mat-raised-button  (click)="changePage(cpage+1)"  >>></button> 
+    <button mat-raised-button  [mat-dialog-close]="signed"  >Close</button> 
   </div>
  
   <div id="pdfview">

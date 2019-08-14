@@ -39,12 +39,12 @@ export class PdfviewComponent implements AfterViewInit {
       page: 2,
       fields: [
         {
-          x: 50,
-          y: 100,
+          x: 0,
+          y: 0,
           style: 'holder'
         },
         {
-          x: 300,
+          x: 0,
           y: 100,
           style: 'insured'
         }
@@ -99,8 +99,8 @@ export class PdfviewComponent implements AfterViewInit {
 
 
     element.style.position = "absolute";
-    element.style.top = y + 300 + "px";
-    element.style.left = x + 300 + "px";
+    element.style.top = y   + "px";
+    element.style.left = x  + "px";
     element.style.display = 'none';
 
 
@@ -124,8 +124,10 @@ export class PdfviewComponent implements AfterViewInit {
         const annotations = (<any>ann) as PDFAnnotationData[];
 
         annotations
+          .filter(x => x.subtype=='link')
 
           .forEach(a => {
+            
 
           });
       });
@@ -180,6 +182,7 @@ export class PdfviewComponent implements AfterViewInit {
 
           )
         }
+        /*
         if (this.cpage < this.pdf.numPages && v.scrollHeight - v.scrollTop <= v.clientHeight + 50) {
           this.changePage(this.cpage + 1);
         }
@@ -187,6 +190,7 @@ export class PdfviewComponent implements AfterViewInit {
         if (this.cpage > 1 && v.scrollTop == 0) {
           this.changePage(this.cpage - 1);
         }
+        
       });
   }
 
