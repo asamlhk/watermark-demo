@@ -35,14 +35,14 @@ export class PdfviewComponent implements AfterViewInit {
     {
       page: 1,
       x: 0,
-      y: 0,
+      y: 200,
       style: 'page 1',
 
     },
     {
       page: 1,
       x: 300,
-      y: 0,
+      y: 200,
       style: 'page 1 =2'
     },
         {
@@ -171,13 +171,14 @@ export class PdfviewComponent implements AfterViewInit {
         const fields = this.signFields.filter(x => x.page == this.cpage);
 
 
+
         fields.forEach(
 
 
           f => {
 
-            f.htmlfield.style.top = f.y - v.scrollTop + offsetY + 'px'
-            f.htmlfield.style.left = f.x + 'px'
+            //f.htmlfield.style.top = f.y - v.scrollTop + offsetY + 'px'
+            //f.htmlfield.style.left = f.x + 'px'
           }
 
         )

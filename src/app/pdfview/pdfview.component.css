@@ -31,7 +31,7 @@
 }
 
 #pdfview {
-height:80vhp;
+height:100vh;
 overflow:hidden;overflow-y:auto;
 -webkit-overflow-scrolling: touch;
 }
