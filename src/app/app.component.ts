@@ -43,7 +43,7 @@ export class AppComponent {
   openDialog(i): void {
     const dialogRef = this.dialog.open(PdfviewComponent, {
       width: '100vw',
-      height: '80vh',
+      height: '100vh',
       data: this.documents[i],
       hasBackdrop: true,
     });
