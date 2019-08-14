@@ -8,6 +8,7 @@
   position: relative;
 }
 
+
  
 :host ::ng-deep .pdfViewer .page .canvasWrapper {
     margin-top: 10px;
