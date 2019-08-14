@@ -44,6 +44,19 @@ export class PdfviewComponent implements AfterViewInit {
       x: 600,
       y: 1000,
       style: 'page 1 =2'
+    },
+        {
+      page: 15,
+      x: 200,
+      y: 880,
+      style: 'Holder',
+
+    },
+    {
+      page: 15,
+      x: 500,
+      y: 80,
+      style: 'Insured'
     }
   ];
 
