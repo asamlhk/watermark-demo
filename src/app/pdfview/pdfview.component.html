@@ -1,22 +1,25 @@
 <div class="pdf-container">
-	<div class="toolbar">
-		<button mat-raised-button  [ngClass]="" (click)="changePage(cpage-1)" ><<</button> 
+	<div class="toolbar" (swipe)="onSwipe($event)">
+		<button mat-fab  [ngClass]="" (click)="changePage(cpage-1)" id="prev"><<</button> 
     Page   <input (keyup)="changePage(cpage)" [(ngModel)]="cpage">
-    <button mat-raised-button  (click)="changePage(cpage+1)"  >>></button> 
-    <button mat-raised-button  [mat-dialog-close]="signed"  >Close</button> 
+    <button mat-fab  (click)="changePage(cpage+1)" id="next" >>></button> 
+    <button mat-fab  [mat-dialog-close]="signed" id="close" >Close</button> 
     All Signed : {{allSigned()}}
   </div>
  
-  <div id="pdfview">
+  <div id="pdfview"
+ 
+  >
     <pdf-viewer [src]="src"
           [original-size]="false"
                 (after-load-complete)="callBackFn($event)"
                 [show-all]="false"
                 [(page)]="cpage"   
          [autoresize]="true"
+         (swipe)="onSwipe($event)"
                 #vc   
                 style="display: block; width: 960px; height: 80vh"
-                      
+  
     >
     </pdf-viewer>   
   </div>

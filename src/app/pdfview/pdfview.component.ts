@@ -218,6 +218,12 @@ export class PdfviewComponent implements AfterViewInit {
 
   }
 
+  onSwipe(evt) {
+      const x = Math.abs(evt.deltaX) > 40 ? (evt.deltaX > 0 ? 'right' : 'left'):'';
+      const y = Math.abs(evt.deltaY) > 40 ? (evt.deltaY > 0 ? 'down' : 'up') : '';
+
+      console.log( `${x} ${y}<br/>`);
+  }
   changePage(p) {
     this.cpage = p;
     this.pageRead[this.cpage - 1] = true;
