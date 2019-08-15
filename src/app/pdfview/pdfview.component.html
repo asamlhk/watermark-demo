@@ -7,20 +7,16 @@
     All Signed : {{allSigned()}}
   </div>
  
-  <div id="pdfview"
- 
-  >
+  <div id="pdfview">
     <pdf-viewer [src]="src"
-          [original-size]="false"
-                (after-load-complete)="callBackFn($event)"
-                [show-all]="false"
-                [(page)]="cpage"   
-         [autoresize]="true"
-         (swipe)="onSwipe($event)"
-                #vc   
-                style="display: block; width: 960px; height: 80vh"
-  
-    >
+        [original-size]="false"
+        (after-load-complete)="callBackFn($event)"
+        [show-all]="false"
+        [(page)]="cpage"   
+        [autoresize]="true"
+        (swipe)="onSwipe($event)"
+        #vc   
+        style="display: block; width: 960px; height: 80vh" >
     </pdf-viewer>   
   </div>
 
