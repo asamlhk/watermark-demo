@@ -6,15 +6,15 @@
     <button mat-raised-button  [mat-dialog-close]="signed"  >Close</button> 
   </div>
  
-  <div id="pdfview" >
+  <div id="pdfview">
     <pdf-viewer [src]="src"
-                 [fit-to-page]="false"
-                 [original-size]="false"
+          [original-size]="false"
                 (after-load-complete)="callBackFn($event)"
                 [show-all]="false"
                 [(page)]="cpage"   
-                [autoresize]="true"
+         [autoresize]="true"
                 #vc   
+                style="display: block;min-width: 1024px"
                       
     >
     </pdf-viewer>   

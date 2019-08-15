@@ -45,7 +45,7 @@ export class PdfviewComponent implements AfterViewInit {
       y: 200,
       style: 'insured'
     },
-        {
+    {
       page: 15,
       x: 200,
       y: 880,
@@ -77,6 +77,7 @@ export class PdfviewComponent implements AfterViewInit {
   }
 
   addSignField(x, y, signType) {
+    const ratio = 1;
 
     const factory = this.componentFactoryResolver
       .resolveComponentFactory(SignComponent);
@@ -89,9 +90,12 @@ export class PdfviewComponent implements AfterViewInit {
     let element: HTMLElement = <HTMLElement>component.location.nativeElement;
 
 
+
+    console.log(this.vc.element.nativeElement)
     element.style.position = "absolute";
-    element.style.top = y + "px";
-    element.style.left = x + "px";
+    element.style.top = y * ratio + "px";
+
+    element.style.left = x * ratio + "px";
     //element.style.display = 'none';
 
 
@@ -101,6 +105,8 @@ export class PdfviewComponent implements AfterViewInit {
   }
 
   loadComplete(pdf: PDFDocumentProxy): void {
+
+
 
     for (let i = 1; i <= pdf.numPages; i++) {
 
@@ -162,8 +168,8 @@ export class PdfviewComponent implements AfterViewInit {
         throttle(val => interval(10))
       )
       .subscribe((event) => {
-        const offsetX = 0//document.getElementById("pdfview").offsetLeft;
-        const offsetY = 0//document.getElementById("pdfview").offsetTop;
+
+        //const offsetY =  document.getElementById("pdfview").offsetTop;
 
 
         const ele = event.srcElement;
