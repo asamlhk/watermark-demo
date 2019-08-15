@@ -64,12 +64,10 @@ export class PdfviewComponent implements AfterViewInit {
 
     this.signFields.filter(f => f.htmlfield).forEach(
       f => f.htmlfield.style.display = 'none'
-
     );
 
     this.signFields.filter(f => f.htmlfield && f.page === page).forEach(
       f => f.htmlfield.style.display = 'block'
-
     );
 
 

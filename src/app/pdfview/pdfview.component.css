@@ -36,7 +36,7 @@
 
 #pdfview {
 height:100vh;
-overflow:hidden;overflow-y:auto;
+ ;overflow:auto;
 -webkit-overflow-scrolling: touch;
 }
 
