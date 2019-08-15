@@ -32,9 +32,7 @@ export class SignComponent {
     // no-op
   }
 
-  getImage() {
-    return this.signaturePad ? this._sanitizer.bypassSecurityTrustResourceUrl(this.signaturePad.toDataURL("png")) : null;
-  }
+ 
 
   ngAfterViewInit() {
     // this.signaturePad is now available
@@ -42,13 +40,9 @@ export class SignComponent {
     this.signaturePad.clear(); // invoke functions from szimek/signature_pad API
     let ele: any = document.getElementsByTagName("canvas")[0]
     let ctx = ele.getContext("2d");
-
-
   }
 
   drawComplete() {
-    // will be notified of szimek/signature_pad's onEnd event
-    //console.log(this.signaturePad.toDataURL());
     this.imagedata = this._sanitizer.bypassSecurityTrustResourceUrl(this.signaturePad.toDataURL("png"));
   }
 

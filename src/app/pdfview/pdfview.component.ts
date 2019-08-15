@@ -28,7 +28,7 @@ export class PdfviewComponent implements AfterViewInit {
   @ViewChild("vc", { read: ViewContainerRef }) vc: ViewContainerRef;
 
   changingPage = false;
-  timeout = 10;
+
 
   signatures = [];
 
@@ -67,7 +67,7 @@ export class PdfviewComponent implements AfterViewInit {
     const signs = this.signFields.map(
       s => s.htmlfield
     )
-    
+
   }
 
   showSignField(page) {
@@ -109,7 +109,7 @@ export class PdfviewComponent implements AfterViewInit {
 
       }
     )
- 
+
     element.style.position = "absolute";
     element.style.top = y * this.dpiRatio + "px";
 
@@ -160,14 +160,14 @@ export class PdfviewComponent implements AfterViewInit {
       ps
     ).then(
       () => {
- 
+
         this.signFields.forEach(f => f.htmlfield = this.addSignField(f.x, f.y, f.style, f.page));
-   
+
         this.changePage(1)
       }
     );
 
- 
+
 
 
   }
