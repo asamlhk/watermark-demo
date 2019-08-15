@@ -3,6 +3,7 @@
 		<signature-pad [options]="signaturePadOptions" (onBeginEvent)="drawStart()" (onEndEvent)="drawComplete()">
 		</signature-pad>
 		<button mat-raised-button (click)="signed = true;">Sign</button>   
+    ({{signType}})
    
 	</div>
   <div id="signImage" [ngStyle]="{'display': signed?'':'none'}"  >
