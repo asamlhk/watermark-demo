@@ -63,11 +63,7 @@ export class AppComponent {
       ]
     }
   ]
-
-  lastSign = () => {
-    return this.documents.findIndex((ele) => ele.signed);
-    //return false;
-  }
+ 
 
   constructor(public dialog: MatDialog) {
 
