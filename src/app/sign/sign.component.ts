@@ -44,6 +44,8 @@ export class SignComponent {
   }
 
   drawStart() {
+    // will be notified of szimek/signature_pad's onBegin event
+    //console.log('begin drawing');
   }
 }
 
