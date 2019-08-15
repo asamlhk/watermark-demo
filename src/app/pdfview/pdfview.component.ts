@@ -37,6 +37,7 @@ export class PdfviewComponent implements AfterViewInit {
       x: 200,
       y: 200,
       style: 'holder',
+      htmlfield:null
 
     },
     {
@@ -48,17 +49,24 @@ export class PdfviewComponent implements AfterViewInit {
     {
       page: 15,
       x: 200,
-      y: 880,
-      style: 'Holder',
+      y: 1230,
+      style: 'holder',
 
     },
     {
       page: 15,
       x: 500,
-      y: 80,
-      style: 'Insured'
+      y: 1230,
+      style: 'insured'
     }
   ];
+
+  showImages() {
+    const signs = this.signFields.map (
+      s => s.htmlfield
+    )
+    console.log(signs)
+  }
 
   showSignField(page) {
 
@@ -258,10 +266,6 @@ export class PdfviewComponent implements AfterViewInit {
     this.loadComplete(pdf);
   }
 
-
-  readAllPages() {
-    return this.timeout == 0 && this.pageRead.filter(x => !x).length == 0;
-  }
 
   onNoClick() {
     this.dialogRef.close();

@@ -35,14 +35,19 @@
 }
 
 #pdfview {
-height:100vh;
- ;overflow:auto;
+  display: block; width: 970px; height: 80vh;
+ overflow-y:auto;
 -webkit-overflow-scrolling: touch;
+margin: auto;
 }
 
 app-sign {
   position: absolute;
   top: 10px;
+  
 }
 
+.pdf-container {
+  text-align: center;
+}
  

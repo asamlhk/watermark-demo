@@ -4,6 +4,7 @@
     Page   <input (keyup)="changePage(cpage)" [(ngModel)]="cpage">
     <button mat-raised-button  (click)="changePage(cpage+1)"  >>></button> 
     <button mat-raised-button  [mat-dialog-close]="signed"  >Close</button> 
+    <button mat-raised-button (click)="showImages()">Show all signature</button>
   </div>
  
   <div id="pdfview">
@@ -14,7 +15,7 @@
                 [(page)]="cpage"   
          [autoresize]="true"
                 #vc   
-                style="display: block;min-width: 1024px;m-width: 1024px"
+                style="display: block; width: 960px; height: 80vh"
                       
     >
     </pdf-viewer>   
