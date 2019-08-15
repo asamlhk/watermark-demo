@@ -63,6 +63,10 @@ export class PdfviewComponent implements AfterViewInit {
     }
   ];
 
+  allSigned = () => {
+    return false;
+  }
+
   showImages() {
     const signs = this.signFields.map(
       s => s.htmlfield
