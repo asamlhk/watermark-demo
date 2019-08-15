@@ -36,7 +36,7 @@ export class PdfviewComponent implements AfterViewInit {
   signFields = [
     {
       page: 1,
-      x: 200,
+      x: 100,
       y: 200,
       style: 'holder',
       htmlfield:null,
@@ -45,20 +45,20 @@ export class PdfviewComponent implements AfterViewInit {
     },
     {
       page: 1,
-      x: 500,
+      x: 400,
       y: 200,
       style: 'insured'
     },
     {
       page: 15,
-      x: 200,
+      x: 100,
       y: 1230,
       style: 'holder',
 
     },
     {
       page: 15,
-      x: 500,
+      x: 400,
       y: 1230,
       style: 'insured'
     }
