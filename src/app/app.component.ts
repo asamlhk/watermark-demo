@@ -50,7 +50,17 @@ export class AppComponent {
       name: 'Application Form',
       url: 'https://firebasestorage.googleapis.com/v0/b/storage-5ad5a.appspot.com/o/IND_3220082170_EPOSAPP_NA_NA_20190618.pdf?alt=media&token=8a3b70cd-6aad-48df-92ed-05dbd53e7bcb',
       signed: false,
-      signatures: []
+      signatures: [
+                {
+          page: 13,
+          x: 100,
+          y: 200,
+          style: 'holder',
+          htmlfield: null,
+          meta: null,
+
+        },
+      ]
     }
   ]
 
