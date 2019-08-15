@@ -31,6 +31,7 @@
 #pdfview {
   z-index: 2;
   position: relative;
+  
 }
 
 ::-webkit-scrollbar{
