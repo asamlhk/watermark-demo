@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { PdfViewerModule } from 'ng2-pdf-viewer'; // <- import OrderModule
 import { AppComponent } from './app.component';
-import { HelloComponent } from './hello.component';
+ 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule, MatCheckboxModule, } from '@angular/material';
 import { PdfviewComponent } from './pdfview/pdfview.component';
@@ -18,7 +18,7 @@ import { SignaturePadModule } from 'angular2-signaturepad';
     MatDialogModule, BrowserAnimationsModule,SignaturePadModule
  
   ],
-  declarations: [AppComponent, HelloComponent, PdfviewComponent, SignComponent],
+  declarations: [AppComponent, PdfviewComponent, SignComponent],
   bootstrap: [AppComponent],
   entryComponents: [PdfviewComponent, SignComponent],
 
