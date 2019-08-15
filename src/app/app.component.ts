@@ -75,12 +75,9 @@ export class AppComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(i)
-      this.documents[i].signed = result;
-      if (i < this.documents.length - 1 && result) {
-        i++;
-        this.openDialog(i)
-      }
+      if(result.next)
+        this.openDialog(i)  
+ 
     });
   }
 }

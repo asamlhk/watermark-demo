@@ -5,6 +5,7 @@
     <button mat-fab  (click)="changePage(cpage+1)" id="next" >>></button> 
     <button mat-fab  [mat-dialog-close]="signed" id="close" >Close</button> 
     All Signed : {{allSigned()}}
+    <button mat-raised-button (click)="save()" [disabled]="!allSigned()">Save and Next</button>
   </div>
  
   <div id="pdfview">

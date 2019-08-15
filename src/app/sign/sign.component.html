@@ -2,8 +2,10 @@
 	<div id="spdiv" [ngClass]="signType" [ngStyle]="{'display': !signed && imagedata?'':'none'}">
 		<signature-pad [options]="signaturePadOptions" (onBeginEvent)="drawStart()" (onEndEvent)="drawComplete()">
 		</signature-pad>
+    <div id="actionbar">
 		<button mat-raised-button (click)="signed = true;">Sign</button>   
     ({{signType}})
+    </div>
    
 	</div>
   <div id="signImage" [ngStyle]="{'display': signed?'':'none'}"  >

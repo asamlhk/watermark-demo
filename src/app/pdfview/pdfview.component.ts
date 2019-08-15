@@ -241,6 +241,13 @@ export class PdfviewComponent implements AfterViewInit {
     this.dialogRef.close();
   }
 
+  save() {
+    this.dialogRef.close({
+      next: true
+    });
+  }
+ 
+
 
 
 }
