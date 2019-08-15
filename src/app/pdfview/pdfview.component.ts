@@ -69,13 +69,7 @@ export class PdfviewComponent implements AfterViewInit {
     ).every(s => s)
     
   }
-
-  showImages() {
-    const signs = this.signFields.map(
-      s => s.htmlfield
-    )
-
-  }
+ 
 
   showSignField(page) {
 
@@ -174,9 +168,6 @@ export class PdfviewComponent implements AfterViewInit {
       }
     );
 
-
-
-
   }
 
   ngAfterViewInit() {
@@ -265,12 +256,7 @@ export class PdfviewComponent implements AfterViewInit {
     ctx.restore();
   }
 
-  update() {
-    this.pageRead[this.cpage - 1] = true;
-    this.cpage = this.cpage;
-    this.watermark();
-  }
-
+ 
   callBackFn(pdf) {
     // do anything with "pdf"
     this.pdf = pdf;
