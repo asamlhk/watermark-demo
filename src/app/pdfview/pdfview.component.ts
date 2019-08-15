@@ -72,8 +72,12 @@ export class PdfviewComponent implements AfterViewInit {
 
   showSignField(page) {
 
+ 
     this.signFields.filter(f => f.htmlfield).forEach(
-      f => f.page === page ? f => f.htmlfield.style.display = 'block' : f.htmlfield.style.display = 'none'
+      f => {
+  
+        f.page == page ? f.htmlfield.style.display = 'block' : f.htmlfield.style.display = 'none'
+      }
     );
 
   }
