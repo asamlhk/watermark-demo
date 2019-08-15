@@ -17,7 +17,6 @@ import { SignComponent } from '../sign/sign.component';
 })
 export class PdfviewComponent implements AfterViewInit {
   src = '';
-
   pdf;
   cpage = 0;
   pageRead = [];
@@ -68,7 +67,7 @@ export class PdfviewComponent implements AfterViewInit {
     const signs = this.signFields.map(
       s => s.htmlfield
     )
-    console.log(this.signatures)
+    
   }
 
   showSignField(page) {
