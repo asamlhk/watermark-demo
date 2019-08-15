@@ -11,8 +11,9 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) rotate(-30deg);
   color: red;
+  font-family: 'arial';
 }
 
 #signImage {
