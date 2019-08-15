@@ -31,36 +31,7 @@ export class PdfviewComponent implements AfterViewInit {
 
   signatures = [];
 
-  signFields = [
-    {
-      page: 1,
-      x: 100,
-      y: 200,
-      style: 'holder',
-      htmlfield: null,
-      meta: null,
-
-    },
-    {
-      page: 1,
-      x: 400,
-      y: 200,
-      style: 'insured'
-    },
-    {
-      page: 15,
-      x: 100,
-      y: 700,
-      style: 'holder',
-
-    },
-    {
-      page: 15,
-      x: 400,
-      y: 700,
-      style: 'insured'
-    }
-  ];
+  signFields = [];
 
   allSigned = () => {
     return this.signatures.map(
@@ -219,6 +190,7 @@ export class PdfviewComponent implements AfterViewInit {
 
     this.src = data.url;
     this.signed = data.signed;
+    this.signFields = data.signatures;
 
   }
 
