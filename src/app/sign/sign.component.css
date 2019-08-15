@@ -6,6 +6,33 @@
   background-repeat: repeat;
 }
 
-button {
-  color: red
+#imgOverlay {
+    position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: red;
+}
+
+#signImage {
+    position: relative;
+  text-align: center;
+  color: white;
+}
+
+.holder {
+  background-color: red
+}
+
+.insured {
+  background-color: blue;
+}
+
+.signature {
+  width: 200px;
+
+}
+
+.sampleoverlay {
+
 }

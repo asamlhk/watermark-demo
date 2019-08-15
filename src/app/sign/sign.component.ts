@@ -21,7 +21,7 @@ export class SignComponent {
     'minWidth': 5,
     'canvasWidth': 300,
     'canvasHeight': 150,
-    //backgroundColor: "rgba(0, 0, 0, 1)"
+     
   };
 
  

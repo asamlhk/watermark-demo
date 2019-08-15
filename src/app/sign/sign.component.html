@@ -1,12 +1,16 @@
 <div [ngStyle]="{'display': display?'':'none'}">
-	<div id="spdiv"  [ngStyle]="{'display': !signed && imagedata?'':'none'}">
+	<div id="spdiv" [ngClass]="signType" [ngStyle]="{'display': !signed && imagedata?'':'none'}">
 		<signature-pad [options]="signaturePadOptions" (onBeginEvent)="drawStart()" (onEndEvent)="drawComplete()">
 		</signature-pad>
 		<button mat-raised-button (click)="signed = true;">Sign</button>   
    
 	</div>
+  <div id="signImage" [ngStyle]="{'display': signed?'':'none'}"  >
   <img [src]="imagedata"   
-  [ngStyle]="{'display': signed?'':'none'}"  (click)="signaturePad.clear();signed = false;"/>
-  <button *ngIf="!imagedata" mat-raised-button (click)="imagedata='ddd'">Sign Here</button>
+  
+  (click)="signaturePad.clear();signed = false;" class="signature"/>
+  <div id="imgOverlay">Watermark sample</div>
+  </div>
+  <button *ngIf="!imagedata" mat-raised-button (click)="imagedata='ddd'" [ngClass]="signType">Sign Here</button>
  
-</div> {{signType}}
+</div>

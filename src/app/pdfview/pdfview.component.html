@@ -1,6 +1,6 @@
 <div class="pdf-container">
 	<div class="toolbar">
-		<button mat-raised-button  (click)="changePage(cpage-1)" ><<</button> 
+		<button mat-raised-button  [ngClass]="" (click)="changePage(cpage-1)" ><<</button> 
     Page   <input (keyup)="changePage(cpage)" [(ngModel)]="cpage">
     <button mat-raised-button  (click)="changePage(cpage+1)"  >>></button> 
     <button mat-raised-button  [mat-dialog-close]="signed"  >Close</button> 
@@ -8,10 +8,12 @@
  
   <div id="pdfview" >
     <pdf-viewer [src]="src"
-                [original-size]="false"
+                 [fit-to-page]="false"
+                 [original-size]="false"
                 (after-load-complete)="callBackFn($event)"
                 [show-all]="false"
                 [(page)]="cpage"   
+                [autoresize]="true"
                 #vc   
                       
     >

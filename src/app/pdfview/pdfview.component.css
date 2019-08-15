@@ -4,7 +4,8 @@
 }
 
 .pdf-container {
-  width: 100%
+  width: 100%;
+  background-color: gray;
 }
 #pdfview {
   z-index: 2;
@@ -43,3 +44,5 @@ app-sign {
   position: absolute;
   top: 10px;
 }
+
+ 
