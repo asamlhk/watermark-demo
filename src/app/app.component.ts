@@ -76,7 +76,7 @@ export class AppComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result.next)
-        this.openDialog(i)  
+        this.openDialog(i+1)  
  
     });
   }
