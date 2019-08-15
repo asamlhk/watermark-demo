@@ -4,7 +4,7 @@
     Page   <input (keyup)="changePage(cpage)" [(ngModel)]="cpage">
     <button mat-raised-button  (click)="changePage(cpage+1)"  >>></button> 
     <button mat-raised-button  [mat-dialog-close]="signed"  >Close</button> 
-   
+    All Signed : {{allSigned()}}
   </div>
  
   <div id="pdfview">

@@ -64,7 +64,10 @@ export class PdfviewComponent implements AfterViewInit {
   ];
 
   allSigned = () => {
-    return false;
+    return this.signatures.map(
+      s => s.sign.imagedata != null
+    ).every(s => s)
+    
   }
 
   showImages() {
