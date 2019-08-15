@@ -1,4 +1,4 @@
-import { Component, ViewChild, Input} from '@angular/core';
+import { Component, ViewChild, Input } from '@angular/core';
 import { SignaturePad } from 'angular2-signaturepad/signature-pad';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -10,10 +10,11 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class SignComponent {
   @Input() display;
   signed = false;
-  imagedata;
-  
+  imagedata = null;
+
   @Input() signType;
 
+  meta;
 
 
   @ViewChild(SignaturePad, { static: false }) signaturePad: SignaturePad;
@@ -21,18 +22,18 @@ export class SignComponent {
     'minWidth': 5,
     'canvasWidth': 300,
     'canvasHeight': 150,
-     
+
   };
 
- 
+
 
   constructor(private _sanitizer: DomSanitizer) {
-    
+
     // no-op
   }
 
   getImage() {
-     return this.signaturePad ?this._sanitizer.bypassSecurityTrustResourceUrl(this.signaturePad.toDataURL("png")): null;
+    return this.signaturePad ? this._sanitizer.bypassSecurityTrustResourceUrl(this.signaturePad.toDataURL("png")) : null;
   }
 
   ngAfterViewInit() {
@@ -41,8 +42,8 @@ export class SignComponent {
     this.signaturePad.clear(); // invoke functions from szimek/signature_pad API
     let ele: any = document.getElementsByTagName("canvas")[0]
     let ctx = ele.getContext("2d");
- 
- 
+
+
   }
 
   drawComplete() {

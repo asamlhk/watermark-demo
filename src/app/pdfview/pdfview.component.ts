@@ -31,13 +31,16 @@ export class PdfviewComponent implements AfterViewInit {
   changingPage = false;
   timeout = 10;
 
+  signatures = [];
+
   signFields = [
     {
       page: 1,
       x: 200,
       y: 200,
       style: 'holder',
-      htmlfield:null
+      htmlfield:null,
+      meta: null,
 
     },
     {
@@ -65,7 +68,7 @@ export class PdfviewComponent implements AfterViewInit {
     const signs = this.signFields.map (
       s => s.htmlfield
     )
-    console.log(signs)
+    console.log(this.signatures)
   }
 
   showSignField(page) {
@@ -82,7 +85,7 @@ export class PdfviewComponent implements AfterViewInit {
 
   }
 
-  addSignField(x, y, signType) {
+  addSignField(x, y, signType, page) {
     const ratio = 1;
 
     const factory = this.componentFactoryResolver
@@ -92,8 +95,21 @@ export class PdfviewComponent implements AfterViewInit {
 
     component.instance.display = true;
     component.instance.signType = signType;
+    component.instance.meta = {
+      page: page,
+      x:x,
+      y:y,
+      signType: signType
+    }
 
     let element: HTMLElement = <HTMLElement>component.location.nativeElement;
+
+    this.signatures.push(
+      {
+        sign: component.instance,
+        
+      }
+    )
 
 
 
@@ -151,7 +167,7 @@ export class PdfviewComponent implements AfterViewInit {
         console.log({
           bf: this.signFields
         })
-        this.signFields.forEach(f => f.htmlfield = this.addSignField(f.x, f.y, f.style));
+        this.signFields.forEach(f => f.htmlfield = this.addSignField(f.x, f.y, f.style, f.page));
         console.log({
           ft: this.signFields
         })

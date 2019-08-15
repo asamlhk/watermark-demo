@@ -20,4 +20,11 @@
     >
     </pdf-viewer>   
   </div>
+
+  <div style="display:flex; flex-direction: row;">
+    <div *ngFor="let i of signatures" >
+         {{i.sign.meta | json}}
+        <img *ngIf="i.sign.imagedata" [src]="i.sign.imagedata" class="sign" />
+    </div>
+  </div>
 </div>
