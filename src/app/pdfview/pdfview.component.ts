@@ -24,7 +24,7 @@ export class PdfviewComponent implements AfterViewInit {
   signed = false;
   page = 1;
 
-  readonly dpiRatio = 96 / 72;
+  readonly dpiRatio = 96 / 72 * 1.2;
 
   @ViewChild("vc", { read: ViewContainerRef }) vc: ViewContainerRef;
 
@@ -115,9 +115,9 @@ export class PdfviewComponent implements AfterViewInit {
 
     console.log(this.vc.element.nativeElement)
     element.style.position = "absolute";
-    element.style.top = y * ratio + "px";
+    element.style.top = y * this.dpiRatio + "px";
 
-    element.style.left = x * ratio + "px";
+    element.style.left = x * this.dpiRatio + "px";
     //element.style.display = 'none';
 
 
