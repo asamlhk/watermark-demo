@@ -1,4 +1,3 @@
-
 import * as R from 'ramda';
 import { Component, Inject, OnInit, ViewChild, HostListener, AfterViewInit, ComponentFactoryResolver, ViewContainerRef, ComponentRef, ElementRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
@@ -67,21 +66,15 @@ export class PdfviewComponent implements AfterViewInit {
     return this.signatures.map(
       s => s.sign.imagedata != null
     ).every(s => s)
-    
+
   }
- 
+
 
   showSignField(page) {
 
     this.signFields.filter(f => f.htmlfield).forEach(
-      f => f.htmlfield.style.display = 'none'
+      f => f.page === page ? f => f.htmlfield.style.display = 'block' : f.htmlfield.style.display = 'none'
     );
-
-    this.signFields.filter(f => f.htmlfield && f.page === page).forEach(
-      f => f.htmlfield.style.display = 'block'
-    );
-
-
 
   }
 
@@ -93,9 +86,11 @@ export class PdfviewComponent implements AfterViewInit {
     const component: ComponentRef<SignComponent> = factory
       .create(this.vc.parentInjector);
 
-    component.instance.display = true;
-    component.instance.signType = signType;
-    component.instance.meta = {
+    const instance = component.instance;
+
+    instance.display = true;
+    instance.signType = signType;
+    instance.meta = {
       page: page,
       x: x,
       y: y,
@@ -106,18 +101,14 @@ export class PdfviewComponent implements AfterViewInit {
 
     this.signatures.push(
       {
-        sign: component.instance,
+        sign: instance,
 
       }
     )
 
     element.style.position = "absolute";
     element.style.top = y * this.dpiRatio + "px";
-
     element.style.left = x * this.dpiRatio + "px";
-    //element.style.display = 'none';
-
-
     this.vc.insert(component.hostView);
 
     return element;
@@ -256,7 +247,7 @@ export class PdfviewComponent implements AfterViewInit {
     ctx.restore();
   }
 
- 
+
   callBackFn(pdf) {
     // do anything with "pdf"
     this.pdf = pdf;
