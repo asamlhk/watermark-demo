@@ -28,14 +28,16 @@
   background-color: blue;
 }
 
+.normal {
+  background-color: gray
+}
+
 .signature {
   width: 200px;
 
 }
 
-button {
-  background-color: gray
-}
+ 
 
 .sampleoverlay {
 

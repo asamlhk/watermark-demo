@@ -39,7 +39,7 @@ export class PdfviewComponent implements AfterViewInit {
       x: 100,
       y: 200,
       style: 'holder',
-      htmlfield:null,
+      htmlfield: null,
       meta: null,
 
     },
@@ -65,7 +65,7 @@ export class PdfviewComponent implements AfterViewInit {
   ];
 
   showImages() {
-    const signs = this.signFields.map (
+    const signs = this.signFields.map(
       s => s.htmlfield
     )
     console.log(this.signatures)
@@ -97,8 +97,8 @@ export class PdfviewComponent implements AfterViewInit {
     component.instance.signType = signType;
     component.instance.meta = {
       page: page,
-      x:x,
-      y:y,
+      x: x,
+      y: y,
       signType: signType
     }
 
@@ -107,13 +107,10 @@ export class PdfviewComponent implements AfterViewInit {
     this.signatures.push(
       {
         sign: component.instance,
-        
+
       }
     )
-
-
-
-    console.log(this.vc.element.nativeElement)
+ 
     element.style.position = "absolute";
     element.style.top = y * this.dpiRatio + "px";
 
@@ -127,7 +124,7 @@ export class PdfviewComponent implements AfterViewInit {
   }
 
   loadComplete(pdf: PDFDocumentProxy): void {
-
+    let ps = []
 
 
     for (let i = 1; i <= pdf.numPages; i++) {
@@ -135,7 +132,7 @@ export class PdfviewComponent implements AfterViewInit {
       // track the current page
 
       let currentPage = null;
-      pdf.getPage(i).then(p => {
+      ps.push(pdf.getPage(i).then(p => {
         currentPage = p;
 
         return p.getAnnotations();
@@ -150,77 +147,74 @@ export class PdfviewComponent implements AfterViewInit {
               page: i,
               x: a.rect[0],
               y: a.rect[1],
-              style: 'from annotation'
+              style: 'normal'
             }
           });
 
         this.signFields = this.signFields.concat(sf)
 
-      });
+      }));
 
     }
 
-
-
-    setTimeout(
+    Promise.all(
+      ps
+    ).then(
       () => {
-        console.log({
-          bf: this.signFields
-        })
+ 
         this.signFields.forEach(f => f.htmlfield = this.addSignField(f.x, f.y, f.style, f.page));
-        console.log({
-          ft: this.signFields
-        })
+   
         this.changePage(1)
-      }, 1000);
+      }
+    );
+
+ 
 
 
   }
 
   ngAfterViewInit() {
+    /*
     const pdfview = document.getElementById('pdfview');
     setInterval(
-      () => {
-        this.timeout != 0 ? this.timeout -= 1 : '';
-      }, 1000
-    );
-    Observable.fromEvent(pdfview, 'scroll')
-      .pipe(
-        //debounceTime(30),
-        throttle(val => interval(10))
-      )
-      .subscribe((event) => {
 
-        //const offsetY =  document.getElementById("pdfview").offsetTop;
-
-
-        const ele = event.srcElement;
-        let v = document.getElementById('pdfview');
-        const fields = this.signFields.filter(x => x.page == this.cpage);
-
-
-
-        fields.forEach(
-
-
-          f => {
-
-            //f.htmlfield.style.top = f.y - v.scrollTop + offsetY + 'px'
-            //f.htmlfield.style.left = f.x + 'px'
-          }
-
+      Observable.fromEvent(pdfview, 'scroll')
+        .pipe(
+          //debounceTime(30),
+          throttle(val => interval(1000))
         )
+        .subscribe((event) => {
 
-        /*
-        if (this.cpage < this.pdf.numPages && v.scrollHeight - v.scrollTop <= v.clientHeight + 50) {
-          this.changePage(this.cpage + 1);
-        }
-   
-        if (this.cpage > 1 && v.scrollTop == 0) {
-          this.changePage(this.cpage - 1);
-        }
-        */
-      });
+          //const offsetY =  document.getElementById("pdfview").offsetTop;
+
+
+          const ele = event.srcElement;
+          let v = document.getElementById('pdfview');
+          const fields = this.signFields.filter(x => x.page == this.cpage);
+
+
+
+          fields.forEach(
+
+
+            f => {
+
+              //f.htmlfield.style.top = f.y - v.scrollTop + offsetY + 'px'
+              //f.htmlfield.style.left = f.x + 'px'
+            }
+
+          )
+
+          /*
+          if (this.cpage < this.pdf.numPages && v.scrollHeight - v.scrollTop <= v.clientHeight + 50) {
+            this.changePage(this.cpage + 1);
+          }
+     
+          if (this.cpage > 1 && v.scrollTop == 0) {
+            this.changePage(this.cpage - 1);
+          }
+         
+        }); */
   }
 
 
