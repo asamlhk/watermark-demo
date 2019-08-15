@@ -34,7 +34,7 @@ export class SignComponent {
   ngAfterViewInit() {
     // this.signaturePad is now available
     this.signaturePad.set('minWidth', 5); // set szimek/signature_pad options at runtime
-    this.signaturePad.clear(); // invoke functions from szimek/signature_pad API
+    //this.signaturePad.clear(); // invoke functions from szimek/signature_pad API
     let ele: any = document.getElementsByTagName("canvas")[0]
     let ctx = ele.getContext("2d");
   }
