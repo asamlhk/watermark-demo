@@ -35,10 +35,10 @@
 }
 
 #pdfview {
-  display: block; width: 970px; height: 80vh;
+ display: block; width: 970px; height: 80vh;
  overflow-y:auto;
--webkit-overflow-scrolling: touch;
-margin: auto;
+ -webkit-overflow-scrolling: touch;
+ margin: auto;
 }
 
 app-sign {
