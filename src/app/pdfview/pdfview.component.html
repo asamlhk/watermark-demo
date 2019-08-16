@@ -4,7 +4,7 @@
     Page   <input (keyup)="changePage(cpage)" [(ngModel)]="cpage">
     <button mat-fab  (click)="changePage(cpage+1)" id="next" >>></button> 
     <button mat-fab  [mat-dialog-close]="signed" id="close" >Close</button> 
-    All Signed : {{allSigned()}}  {{signedPages() | json}}
+    All Signed : {{allSigned()}} || Page Signed: {{pageNeedtoSign() - signedPages()}} / {{pageNeedtoSign()}}
     <button mat-raised-button (click)="save()" [disabled]="!allSigned()">Save and Next</button>
 
         <button mat-mini-fab (click)="scale = scale + 0.1" >+</button>

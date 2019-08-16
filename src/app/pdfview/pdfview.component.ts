@@ -39,14 +39,23 @@ export class PdfviewComponent implements AfterViewInit {
       s => s.sign.imagedata != null
     ).every(s => s)
 
+  
+  }
+  pageNeedtoSign = () => {
+    const sp = this.signatures.map(s => s.sign.meta.page);
+    const l = new Set(sp);
+ 
+    return l.size    ; 
   }
 
   signedPages = () => {
     const sp = this.signatures.filter(
-      s => s.sign.imagedata != null
-    ).map(s => s.sign.meta.page)
+      s => s.sign.imagedata == null
+    ).map(s => s.sign.meta.page);
+    const l = new Set(sp);
  
-    return sp?[...new Set(sp)].length:0; }
+    return l.size    ; 
+  }
 
 
   showSignField(page) { 
