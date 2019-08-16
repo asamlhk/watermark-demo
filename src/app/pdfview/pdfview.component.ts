@@ -22,7 +22,7 @@ export class PdfviewComponent implements AfterViewInit {
   signed = false;
   page = 1;
 
-  readonly dpiRatio = 96 / 72 * 1.2;
+  dpiRatio//; = 96 / 72 * 1.2;
 
   @ViewChild("vc", { read: ViewContainerRef }) vc: ViewContainerRef;
 
@@ -62,8 +62,8 @@ export class PdfviewComponent implements AfterViewInit {
     instance.signType = signType;
     instance.meta = {
       page: page,
-      x: x,
-      y: y,
+      x: x * this.dpiRatio,
+      y: y * this.dpiRatio,
       signType: signType
     }
 
@@ -86,6 +86,7 @@ export class PdfviewComponent implements AfterViewInit {
 
   loadComplete(pdf: PDFDocumentProxy): void {
     let ps = []
+ 
 
 
     for (let i = 1; i <= pdf.numPages; i++) {
@@ -95,6 +96,7 @@ export class PdfviewComponent implements AfterViewInit {
       let currentPage = null;
       ps.push(pdf.getPage(i).then(p => {
         currentPage = p;
+        this.dpiRatio = (960 / p.getViewport(1).width )
 
         return p.getAnnotations();
       }).then(ann => {
@@ -189,12 +191,7 @@ export class PdfviewComponent implements AfterViewInit {
 
   }
 
-  onSwipe(evt) {
-      const x = Math.abs(evt.deltaX) > 40 ? (evt.deltaX > 0 ? 'right' : 'left'):'';
-      const y = Math.abs(evt.deltaY) > 40 ? (evt.deltaY > 0 ? 'down' : 'up') : '';
-
-      console.log( `${x} ${y}<br/>`);
-  }
+ 
   changePage(p) {
     this.cpage = p;
     this.pageRead[this.cpage - 1] = true;

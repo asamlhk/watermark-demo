@@ -1,5 +1,5 @@
 <div class="pdf-container">
-	<div class="toolbar" (swipe)="onSwipe($event)">
+	<div class="toolbar"  >
 		<button mat-fab  [ngClass]="" (click)="changePage(cpage-1)" id="prev"><<</button> 
     Page   <input (keyup)="changePage(cpage)" [(ngModel)]="cpage">
     <button mat-fab  (click)="changePage(cpage+1)" id="next" >>></button> 
@@ -15,7 +15,7 @@
         [show-all]="false"
         [(page)]="cpage"   
         [autoresize]="true"
-        (swipe)="onSwipe($event)"
+      
         #vc   
         style="display: block; width: 960px; height: 80vh" >
     </pdf-viewer>   
