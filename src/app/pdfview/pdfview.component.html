@@ -1,21 +1,25 @@
 <div class="pdf-container">
-	<div class="toolbar"  >
+	<div class="toolbar">
 		<button mat-fab  [ngClass]="" (click)="changePage(cpage-1)" id="prev"><<</button> 
     Page   <input (keyup)="changePage(cpage)" [(ngModel)]="cpage">
     <button mat-fab  (click)="changePage(cpage+1)" id="next" >>></button> 
     <button mat-fab  [mat-dialog-close]="signed" id="close" >Close</button> 
-    All Signed : {{allSigned()}}
+    All Signed : {{allSigned()}}  {{signedPages() | json}}
     <button mat-raised-button (click)="save()" [disabled]="!allSigned()">Save and Next</button>
+
+        <button mat-mini-fab (click)="scale = scale + 0.1" >+</button>
+
+            <button mat-mini-fab (click)="scale = scale - 0.1"  >-</button>
   </div>
  
-  <div id="pdfview">
+  <div id="pdfview" [ngStyle]="{'transform': 'scale(' + scale + ')'}">
     <pdf-viewer [src]="src"
         [original-size]="false"
         (after-load-complete)="callBackFn($event)"
         [show-all]="false"
         [(page)]="cpage"   
         [autoresize]="true"
-      
+        
         #vc   
         style="display: block; width: 960px; height: 80vh" >
     </pdf-viewer>   

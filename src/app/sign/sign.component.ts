@@ -39,8 +39,12 @@ export class SignComponent {
     let ctx = ele.getContext("2d");
   }
 
-  drawComplete() {
+  done() {
     this.imagedata = this._sanitizer.bypassSecurityTrustResourceUrl(this.signaturePad.toDataURL("png"));
+  }
+
+  drawComplete() {
+    
   }
 
   drawStart() {

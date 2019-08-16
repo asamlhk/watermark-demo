@@ -3,6 +3,10 @@
    
 }
 
+button {
+  z-index: 10;
+}
+
 #prev {
   position: absolute;
   top: 48vh;

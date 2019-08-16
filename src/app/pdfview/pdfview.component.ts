@@ -32,6 +32,7 @@ export class PdfviewComponent implements AfterViewInit {
   signatures = [];
 
   signFields = [];
+  scale = 1;
 
   allSigned = () => {
     return this.signatures.map(
@@ -39,6 +40,13 @@ export class PdfviewComponent implements AfterViewInit {
     ).every(s => s)
 
   }
+
+  signedPages = () => {
+    const sp = this.signatures.filter(
+      s => s.sign.imagedata != null
+    ).map(s => s.sign.meta.page)
+ 
+    return sp?[...new Set(sp)].length:0; }
 
 
   showSignField(page) { 
