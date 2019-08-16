@@ -10,6 +10,7 @@
         <button mat-mini-fab (click)="scale = scale + 0.1" >+</button>
 
             <button mat-mini-fab (click)="scale = scale - 0.1"  >-</button>
+            <button (click)="getPDF()">Merge signatures to pdf in frontend</button>
   </div>
  
   <div id="pdfview" [ngStyle]="{'transform': 'scale(' + scale + ')'}">

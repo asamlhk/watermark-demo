@@ -7,7 +7,8 @@ import { debounceTime, throttle } from 'rxjs/operators';
 import { PDFDocumentProxy } from 'ng2-pdf-viewer';
 import { PDFAnnotationData } from 'pdfjs-dist';
 import { SignComponent } from '../sign/sign.component';
-
+import { degrees, PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import * as base64 from 'base64-to-uint8array';
 
 @Component({
   selector: 'app-pdfview',
@@ -39,13 +40,13 @@ export class PdfviewComponent implements AfterViewInit {
       s => s.sign.imagedata != null
     ).every(s => s)
 
-  
+
   }
   pageNeedtoSign = () => {
     const sp = this.signatures.map(s => s.sign.meta.page);
     const l = new Set(sp);
- 
-    return l.size    ; 
+
+    return l.size;
   }
 
   signedPages = () => {
@@ -53,16 +54,17 @@ export class PdfviewComponent implements AfterViewInit {
       s => s.sign.imagedata == null
     ).map(s => s.sign.meta.page);
     const l = new Set(sp);
- 
-    return l.size    ; 
+
+    return l.size;
   }
 
 
-  showSignField(page) { 
+  showSignField(page) {
     this.signFields.filter(f => f.htmlfield).forEach(
-      f => { f.page == page ? f.htmlfield.style.display = 'block' : f.htmlfield.style.display = 'none'
+      f => {
+        f.page == page ? f.htmlfield.style.display = 'block' : f.htmlfield.style.display = 'none'
       }
-    ); 
+    );
   }
 
   addSignField(x, y, signType, page) {
@@ -101,9 +103,102 @@ export class PdfviewComponent implements AfterViewInit {
     return element;
   }
 
+  /** poc for client side pdf generation  */
+  getPDF() {
+    this.pdf.getData().then(
+      data => {
+        PDFDocument.load(data).then(
+          pdfDoc => {
+
+            const pages = pdfDoc.getPages();
+
+            this.signatures.filter(s => s.sign.imagedata != null).forEach(
+              s => {
+
+
+                const meta = s.sign.meta
+               
+       
+                var sign: string = s.sign.imagedata;
+                const page = pages[meta.page - 1];
+                const { width, height } = page.getSize();
+
+                pdfDoc.embedPng(sign).then(
+                  pngImage => {
+                    //console.log(pngImage)
+                    page.drawImage(pngImage, {
+                      x: meta.x,
+                      y: meta.y,
+                      width: 200,
+                      height: 100,
+                    })
+                  }
+                )
+
+
+                page.drawRectangle({
+                  x: meta.x / this.dpiRatio,
+                  y: meta.y / this.dpiRatio,
+                  width: 100,
+                  height: 100,
+                  borderColor: rgb(1, 0, 0),
+                  borderWidth: 1.5,
+                })
+
+
+              }
+            )
+
+
+
+            pdfDoc.save().then(
+              data => {
+
+
+
+                var downloadBlob, downloadURL;
+
+                downloadBlob = function (data, fileName, mimeType) {
+                  var blob, url;
+                  blob = new Blob([data], {
+                    type: mimeType
+                  });
+                  url = window.URL.createObjectURL(blob);
+                  downloadURL(url, fileName);
+                  setTimeout(function () {
+                    return window.URL.revokeObjectURL(url);
+                  }, 1000);
+                };
+
+                downloadURL = function (data, fileName) {
+                  var a;
+                  a = document.createElement('a');
+                  a.href = data;
+                  a.download = fileName;
+                  document.body.appendChild(a);
+                  a.style = 'display: none';
+                  a.click();
+                  a.remove();
+                };
+
+                downloadBlob(data, 'newpdf.pdf', 'application/octet-stream');
+              })
+
+
+
+          }
+
+        )
+
+      }
+    )
+  }
+
   loadComplete(pdf: PDFDocumentProxy): void {
-    let ps = []
- 
+    let ps = [];
+    this.pdf = pdf;
+
+
 
 
     for (let i = 1; i <= pdf.numPages; i++) {
@@ -113,7 +208,7 @@ export class PdfviewComponent implements AfterViewInit {
       let currentPage = null;
       ps.push(pdf.getPage(i).then(p => {
         currentPage = p;
-        this.dpiRatio = (960 / p.getViewport(1).width )
+        this.dpiRatio = (960 / p.getViewport(1).width)
 
         return p.getAnnotations();
       }).then(ann => {
@@ -208,7 +303,7 @@ export class PdfviewComponent implements AfterViewInit {
 
   }
 
- 
+
   changePage(p) {
     this.cpage = p;
     this.pageRead[this.cpage - 1] = true;
@@ -260,7 +355,7 @@ export class PdfviewComponent implements AfterViewInit {
       next: true
     });
   }
- 
+
 
 
 
