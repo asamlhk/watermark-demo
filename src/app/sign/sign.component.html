@@ -14,7 +14,7 @@
    
 	</div>
   <div id="signImage" [ngStyle]="{'display': signed?'':'none'}"  >
-  <img [src]="imagedata" (click)="signed = false;" class="signature"/>
+  <img [src]="(imagedata)" (click)="signed = false;" class="signature"/>
     <div id="imgOverlay">COPY</div>
   </div>
   <button *ngIf="!imagedata" mat-raised-button (click)="imagedata='ddd'" [ngClass]="signType">Sign Here</button>

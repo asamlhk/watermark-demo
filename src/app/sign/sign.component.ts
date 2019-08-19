@@ -40,7 +40,11 @@ export class SignComponent {
   }
 
   done() {
-    this.imagedata = this._sanitizer.bypassSecurityTrustResourceUrl(this.signaturePad.toDataURL("png"));
+    this.imagedata = this.signaturePad.toDataURL("png");
+  }
+
+  safeUrl = (image) => {
+    this._sanitizer.bypassSecurityTrustResourceUrl(image);
   }
 
   drawComplete() {

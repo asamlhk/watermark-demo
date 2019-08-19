@@ -1,5 +1,6 @@
 import * as R from 'ramda';
-import { Component, Inject, OnInit, ViewChild, HostListener, AfterViewInit, ComponentFactoryResolver, ViewContainerRef, ComponentRef, ElementRef } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, HostListener, AfterViewInit, ComponentFactoryResolver, ViewContainerRef, ComponentRef, ElementRef, } from '@angular/core';
+import { DomSanitizer } from "@angular/platform-browser";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
 import { Observable, pipe, interval } from "rxjs";
 import 'rxjs/add/observable/fromEvent';
@@ -115,17 +116,21 @@ export class PdfviewComponent implements AfterViewInit {
             this.signatures.filter(s => s.sign.imagedata != null).forEach(
               s => {
                 const meta = s.sign.meta;
-                var sign: string = s.sign.imagedata;
+                var sign = s.sign.imagedata.replace('data:image/png;base64,', '');
                 const page = pages[meta.page - 1];
                 const { width, height } = page.getSize();
+                console.log(sign)
+                var toUint8Array = require('base64-to-uint8array')
+                var signArray = toUint8Array(sign)
 
-                pdfDoc.embedPng(sign).then(
+
+                pdfDoc.embedPng(signArray).then(
                   pngImage => {
-                    //console.log(pngImage)
+
                     page.drawImage(pngImage, {
-                      x: meta.x,
-                      y: meta.y,
-                      width: 200,
+                  x: meta.x / this.dpiRatio,
+                  y: meta.y / this.dpiRatio,
+                      width: 100,
                       height: 100,
                     })
                   }
@@ -280,6 +285,7 @@ export class PdfviewComponent implements AfterViewInit {
     public dialogRef: MatDialogRef<PdfviewComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private componentFactoryResolver: ComponentFactoryResolver,
+    private sanitizer: DomSanitizer
 
   ) {
 
