@@ -113,28 +113,26 @@ export class PdfviewComponent implements AfterViewInit {
 
             const pages = pdfDoc.getPages();
 
+            const ops = [];
+
             this.signatures.filter(s => s.sign.imagedata != null).forEach(
               s => {
                 const meta = s.sign.meta;
                 var sign = s.sign.imagedata.replace('data:image/png;base64,', '');
                 const page = pages[meta.page - 1];
                 const { width, height } = page.getSize();
-                console.log(sign)
-                var toUint8Array = require('base64-to-uint8array')
-                var signArray = toUint8Array(sign)
 
-
-                pdfDoc.embedPng(signArray).then(
+                const op = pdfDoc.embedPng(sign).then(
                   pngImage => {
-
                     page.drawImage(pngImage, {
-                  x: meta.x / this.dpiRatio,
-                  y: meta.y / this.dpiRatio,
+                      x: meta.x / this.dpiRatio,
+                      y: meta.y / this.dpiRatio,
                       width: 100,
                       height: 100,
                     })
                   }
                 );
+                ops.push(op);
                 page.drawRectangle({
                   x: meta.x / this.dpiRatio,
                   y: meta.y / this.dpiRatio,
@@ -145,38 +143,42 @@ export class PdfviewComponent implements AfterViewInit {
                 });;
               }
             );
-            pdfDoc.save().then(
-              data => {
-                var downloadBlob, downloadURL;
-
-                downloadBlob = function (data, fileName, mimeType) {
-                  var blob, url;
-                  blob = new Blob([data], {
-                    type: mimeType
-                  });
-                  url = window.URL.createObjectURL(blob);
-                  downloadURL(url, fileName);
-                  setTimeout(function () {
-                    return window.URL.revokeObjectURL(url);
-                  }, 1000);
-                };
-
-                downloadURL = function (data, fileName) {
-                  var a;
-                  a = document.createElement('a');
-                  a.href = data;
-                  a.download = fileName;
-                  document.body.appendChild(a);
-                  a.style = 'display: none';
-                  a.click();
-                  a.remove();
-                };
-
-                downloadBlob(data, 'newpdf.pdf', 'application/octet-stream');
-              })
+            Promise.all(ops
+            ).then(
+              () => {
 
 
+                pdfDoc.flush();
+                pdfDoc.save().then(
+                  data => {
+                    var downloadBlob, downloadURL;
 
+                    downloadBlob = function (data, fileName, mimeType) {
+                      var blob, url;
+                      blob = new Blob([data], {
+                        type: mimeType
+                      });
+                      url = window.URL.createObjectURL(blob);
+                      downloadURL(url, fileName);
+                      setTimeout(function () {
+                        return window.URL.revokeObjectURL(url);
+                      }, 1000);
+                    };
+
+                    downloadURL = function (data, fileName) {
+                      var a;
+                      a = document.createElement('a');
+                      a.href = data;
+                      a.download = fileName;
+                      document.body.appendChild(a);
+                      a.style = 'display: none';
+                      a.click();
+                      a.remove();
+                    };
+
+                    downloadBlob(data, 'newpdf.pdf', 'application/octet-stream');
+                  })
+              });
           }
 
         )
@@ -240,34 +242,34 @@ export class PdfviewComponent implements AfterViewInit {
     /*
     const pdfview = document.getElementById('pdfview');
     setInterval(
-
+  
       Observable.fromEvent(pdfview, 'scroll')
         .pipe(
           //debounceTime(30),
           throttle(val => interval(1000))
         )
         .subscribe((event) => {
-
+  
           //const offsetY =  document.getElementById("pdfview").offsetTop;
-
-
+  
+  
           const ele = event.srcElement;
           let v = document.getElementById('pdfview');
           const fields = this.signFields.filter(x => x.page == this.cpage);
-
-
-
+  
+  
+  
           fields.forEach(
-
-
+  
+  
             f => {
-
+  
               //f.htmlfield.style.top = f.y - v.scrollTop + offsetY + 'px'
               //f.htmlfield.style.left = f.x + 'px'
             }
-
+  
           )
-
+  
           /*
           if (this.cpage < this.pdf.numPages && v.scrollHeight - v.scrollTop <= v.clientHeight + 50) {
             this.changePage(this.cpage + 1);
