@@ -9,7 +9,7 @@ import { PDFDocumentProxy } from 'ng2-pdf-viewer';
 import { PDFAnnotationData } from 'pdfjs-dist';
 import { SignComponent } from '../sign/sign.component';
 import { degrees, PDFDocument, rgb, StandardFonts } from 'pdf-lib';
-import * as base64 from 'base64-to-uint8array';
+ 
 
 @Component({
   selector: 'app-pdfview',
@@ -121,37 +121,22 @@ export class PdfviewComponent implements AfterViewInit {
                 var sign = s.sign.imagedata.replace('data:image/png;base64,', '');
                 const page = pages[meta.page - 1];
                 const { width, height } = page.getSize();
-
                 const op = pdfDoc.embedPng(sign).then(
                   pngImage => {
-                    
                     page.drawImage(pngImage, {
                       x: meta.x / this.dpiRatio,
                       y: height - meta.y / this.dpiRatio - 70,
                       height: pngImage.scale(0.3).height,
                       width: pngImage.scale(0.3).width,
-
-
                     })
                   });
 
-                console.log(
-                  {
-                    x: meta.x / this.dpiRatio,
-                    y: meta.y / this.dpiRatio,
-                    width,
-                    height,
-                  }
-
-                );
                 ops.push(op);
               }
             );
             Promise.all(ops
             ).then(
               () => {
-
-
                 pdfDoc.flush();
                 pdfDoc.save().then(
                   data => {
@@ -194,14 +179,7 @@ export class PdfviewComponent implements AfterViewInit {
   loadComplete(pdf: PDFDocumentProxy): void {
     let ps = [];
     this.pdf = pdf;
-
-
-
-
     for (let i = 1; i <= pdf.numPages; i++) {
-
-      // track the current page
-
       let currentPage = null;
       ps.push(pdf.getPage(i).then(p => {
         currentPage = p;
@@ -211,9 +189,7 @@ export class PdfviewComponent implements AfterViewInit {
       }).then(ann => {
 
         const annotations = (<any>ann) as PDFAnnotationData[];
-
         const sf = annotations
-
           .map(a => {
             return {
               page: i,
@@ -222,68 +198,18 @@ export class PdfviewComponent implements AfterViewInit {
               style: 'normal'
             }
           });
-
-        this.signFields = this.signFields.concat(sf)
-
+        this.signFields = this.signFields.concat(sf);
       }));
-
     }
-
-    Promise.all(
-      ps
-    ).then(
+    Promise.all(ps).then(
       () => {
-
         this.signFields.forEach(f => f.htmlfield = this.addSignField(f.x, f.y, f.style, f.page));
-
         this.changePage(1)
       }
     );
-
   }
 
   ngAfterViewInit() {
-    /*
-    const pdfview = document.getElementById('pdfview');
-    setInterval(
-  
-      Observable.fromEvent(pdfview, 'scroll')
-        .pipe(
-          //debounceTime(30),
-          throttle(val => interval(1000))
-        )
-        .subscribe((event) => {
-  
-          //const offsetY =  document.getElementById("pdfview").offsetTop;
-  
-  
-          const ele = event.srcElement;
-          let v = document.getElementById('pdfview');
-          const fields = this.signFields.filter(x => x.page == this.cpage);
-  
-  
-  
-          fields.forEach(
-  
-  
-            f => {
-  
-              //f.htmlfield.style.top = f.y - v.scrollTop + offsetY + 'px'
-              //f.htmlfield.style.left = f.x + 'px'
-            }
-  
-          )
-  
-          /*
-          if (this.cpage < this.pdf.numPages && v.scrollHeight - v.scrollTop <= v.clientHeight + 50) {
-            this.changePage(this.cpage + 1);
-          }
-     
-          if (this.cpage > 1 && v.scrollTop == 0) {
-            this.changePage(this.cpage - 1);
-          }
-         
-        }); */
   }
 
 
@@ -294,11 +220,9 @@ export class PdfviewComponent implements AfterViewInit {
     private sanitizer: DomSanitizer
 
   ) {
-
     this.src = data.url;
     this.signed = data.signed;
     this.signFields = data.signatures;
-
   }
 
 
@@ -309,8 +233,7 @@ export class PdfviewComponent implements AfterViewInit {
 
     document.body.scrollTop = 1; // For Safari
     var element = document.getElementById('pdfview');
-    element.scrollTop = 1; // For Chrome, Firefox, IE and Opera
-
+    element.scrollTop = 1;
   }
 
   watermark() {
