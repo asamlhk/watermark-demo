@@ -124,23 +124,27 @@ export class PdfviewComponent implements AfterViewInit {
 
                 const op = pdfDoc.embedPng(sign).then(
                   pngImage => {
+                    
                     page.drawImage(pngImage, {
                       x: meta.x / this.dpiRatio,
-                      y: meta.y / this.dpiRatio,
-                      width: 100,
-                      height: 100,
+                      y: height - meta.y / this.dpiRatio - 70,
+                      height: pngImage.scale(0.3).height,
+                      width: pngImage.scale(0.3).width,
+
+
                     })
+                  });
+
+                console.log(
+                  {
+                    x: meta.x / this.dpiRatio,
+                    y: meta.y / this.dpiRatio,
+                    width,
+                    height,
                   }
+
                 );
                 ops.push(op);
-                page.drawRectangle({
-                  x: meta.x / this.dpiRatio,
-                  y: meta.y / this.dpiRatio,
-                  width: 100,
-                  height: 100,
-                  borderColor: rgb(1, 0, 0),
-                  borderWidth: 1.5,
-                });;
               }
             );
             Promise.all(ops
