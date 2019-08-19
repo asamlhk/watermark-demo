@@ -2,7 +2,7 @@
   border: 1px solid;
   width: 500px;
   height: 350px;
-  position: fixed;
+  position: relative;
   left: 0px;
   top:  0px;
   background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJVkrFm5q_yToMz7UPWKXcXeW5yOFAZHtxqwbZjW9QbzaUbWlMZg);
