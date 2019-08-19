@@ -114,11 +114,7 @@ export class PdfviewComponent implements AfterViewInit {
 
             this.signatures.filter(s => s.sign.imagedata != null).forEach(
               s => {
-
-
-                const meta = s.sign.meta
-               
-       
+                const meta = s.sign.meta;
                 var sign: string = s.sign.imagedata;
                 const page = pages[meta.page - 1];
                 const { width, height } = page.getSize();
@@ -133,9 +129,7 @@ export class PdfviewComponent implements AfterViewInit {
                       height: 100,
                     })
                   }
-                )
-
-
+                );
                 page.drawRectangle({
                   x: meta.x / this.dpiRatio,
                   y: meta.y / this.dpiRatio,
@@ -143,19 +137,11 @@ export class PdfviewComponent implements AfterViewInit {
                   height: 100,
                   borderColor: rgb(1, 0, 0),
                   borderWidth: 1.5,
-                })
-
-
+                });;
               }
-            )
-
-
-
+            );
             pdfDoc.save().then(
               data => {
-
-
-
                 var downloadBlob, downloadURL;
 
                 downloadBlob = function (data, fileName, mimeType) {

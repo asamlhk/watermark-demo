@@ -21,7 +21,7 @@ export class AppComponent {
           y: 200,
           style: 'holder',
           htmlfield: null,
-          meta: null, 
+          meta: null,
         },
         {
           page: 1,
@@ -55,7 +55,7 @@ export class AppComponent {
           y: 200,
           style: 'holder',
           htmlfield: null,
-          meta: null, 
+          meta: null,
         },
       ]
     }
@@ -75,9 +75,9 @@ export class AppComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result.next)
-        this.openDialog(i+1)  
- 
+      if (result.next)
+        this.openDialog(i + 1)
+
     });
   }
 }
