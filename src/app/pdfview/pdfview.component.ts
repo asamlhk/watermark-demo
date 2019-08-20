@@ -236,7 +236,7 @@ export class PdfviewComponent implements AfterViewInit {
           s => {
             const ori = this.originalSignatures.find(
               os =>
-               
+
                 os.sign.meta.x == s.sign.meta.x &&
                 os.sign.meta.page == s.sign.meta.page &&
                 os.sign.meta.y == s.sign.meta.y
@@ -246,7 +246,7 @@ export class PdfviewComponent implements AfterViewInit {
               currnet: s
             });
 
-             
+
             if (s && ori) {
               s.sign.imagedata = ori.sign.imagedata;
               s.sign.signed = true;
@@ -343,7 +343,52 @@ export class PdfviewComponent implements AfterViewInit {
 
 
   onNoClick() {
-    this.dialogRef.close();
+
+    const unsignedfield = this.getunsignedfield();
+    if (unsignedfield) {
+      const sign = confirm('unsigned field found, still close?')
+      if (!sign) {
+        console.log(
+          {
+            page: unsignedfield.sign.meta.page,
+            y: unsignedfield.sign.meta.y
+          }
+
+
+        )
+        this.changePage(unsignedfield.sign.meta.page);
+        setTimeout(
+
+          () => {
+            document.getElementById("pdfview").scrollTo(0, unsignedfield.sign.meta.y);
+
+          }, 500
+        );
+
+
+
+      } else {
+        this.dialogRef.close({
+          signatures: this.signatures,
+          next: false
+        });
+      }
+
+    }
+    else {
+      this.dialogRef.close({
+        signatures: this.signatures,
+        next: false
+      });
+    }
+
+
+  }
+
+  getunsignedfield() {
+    return this.signatures.find(
+      s => s.sign.imagedata == null
+    );
   }
 
   save() {
