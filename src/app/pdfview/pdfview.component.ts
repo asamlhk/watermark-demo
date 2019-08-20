@@ -94,7 +94,6 @@ export class PdfviewComponent implements AfterViewInit {
     this.signatures.push(
       {
         sign: instance,
-
       }
     )
 
@@ -303,6 +302,7 @@ export class PdfviewComponent implements AfterViewInit {
 
   save() {
     this.dialogRef.close({
+      signFields: this.signFields,
       next: true
     });
   }

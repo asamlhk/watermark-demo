@@ -88,8 +88,10 @@ export class AppComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result.next)
+      if (result.next) {
+        this.documents[i].signFields = result.signFields;
         this.openDialog(i + 1)
+      }
 
     });
   }
