@@ -201,6 +201,11 @@ export class PdfviewComponent implements AfterViewInit {
           const annotations = (<any>ann) as PDFAnnotationData[];
           const h = currentPage.getViewport(1).height;
 
+          console.log({
+
+            annotations
+          })
+
           const sf = annotations
             .filter(
               s => s.fieldType == 'Sig'//s.subtype == 'fieldType'
