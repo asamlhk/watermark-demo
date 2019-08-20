@@ -243,7 +243,7 @@ export class PdfviewComponent implements AfterViewInit {
   ) {
     this.src = data.url;
     this.signed = data.signed;
-    this.signFields = data.signatures;
+    this.signFields = data.signfieldsmeta;
   }
 
 
@@ -302,7 +302,7 @@ export class PdfviewComponent implements AfterViewInit {
 
   save() {
     this.dialogRef.close({
-      signFields: this.signFields,
+      signatures: this.signatures,
       next: true
     });
   }

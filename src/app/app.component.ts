@@ -14,13 +14,13 @@ export class AppComponent {
         name: 'USD',
         url: 'https://firebasestorage.googleapis.com/v0/b/storage-5ad5a.appspot.com/o/T19_USD_DBS%20(11-2018)%20with%20PICS%20-%20Acroform%20-%201%20field.PDF?alt=media&token=18d40fb2-3e96-41ff-805a-0e55c03410cb',
         signed: false,
-        signatures: []
+        signfieldsmeta: []
     },
     {
       name: 'La Vie',
       url: 'https://firebasestorage.googleapis.com/v0/b/storage-5ad5a.appspot.com/o/TC7%20-%20La%20Vie%20(EN%2C%20HK).pdf?alt=media&token=cf242713-5862-44f0-882f-77f4dbb9b145',
       signed: false,
-      signatures: [
+      signfieldsmeta: [
         {
           page: 1,
           x: 100,
@@ -55,7 +55,7 @@ export class AppComponent {
       name: 'Application Form',
       url: 'https://firebasestorage.googleapis.com/v0/b/storage-5ad5a.appspot.com/o/IND_3220082170_EPOSAPP_NA_NA_20190618.pdf?alt=media&token=8a3b70cd-6aad-48df-92ed-05dbd53e7bcb',
       signed: false,
-      signatures: [
+      signfieldsmeta: [
         {
           page: 13,
           x: 100,
@@ -89,7 +89,7 @@ export class AppComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result.next) {
-        this.documents[i].signFields = result.signFields;
+        this.documents[i].signatures = result.signatures;
         this.openDialog(i + 1)
       }
 
