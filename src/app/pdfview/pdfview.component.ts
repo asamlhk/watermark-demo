@@ -32,15 +32,16 @@ export class PdfviewComponent implements AfterViewInit {
 
 
   signatures = [];
+  originalSignatures = [];
 
   signFields = [];
   scale = 1;
 
   allSigned = () => {
+
     return this.signatures.map(
       s => s.sign.imagedata != null
     ).every(s => s)
-
 
   }
   pageNeedtoSign = () => {
@@ -190,7 +191,7 @@ export class PdfviewComponent implements AfterViewInit {
 
       ps.push(pdf.getPage(i).then(p => {
         currentPage = p;
-        
+
 
         this.dpiRatio = (960 / p.getViewport(1).width);
         return p.getAnnotations();
@@ -199,16 +200,16 @@ export class PdfviewComponent implements AfterViewInit {
 
           const annotations = (<any>ann) as PDFAnnotationData[];
           const h = currentPage.getViewport(1).height;
-  
+
           const sf = annotations
-          .filter(
-                s => s.fieldType == 'Sig'//s.subtype == 'fieldType'
-              )
+            .filter(
+              s => s.fieldType == 'Sig'//s.subtype == 'fieldType'
+            )
             .map(a => {
               return {
                 page: i,
                 x: a.rect[0],
-                y: h-a.rect[1],
+                y: h - a.rect[1],
                 style: 'normal'
               }
             });
@@ -222,10 +223,49 @@ export class PdfviewComponent implements AfterViewInit {
     }
     Promise.all(ps).then(
       () => {
-        if(this.signFields)
+        if (this.signFields)
           this.signFields.forEach(f => f.htmlfield = this.addSignField(f.x, f.y, f.style, f.page));
         this.changePage(1);
-        
+
+        this.signatures.forEach(
+          s => {
+            const ori = this.originalSignatures.find(
+              os =>
+               
+                os.sign.meta.x == s.sign.meta.x &&
+                os.sign.meta.page == s.sign.meta.page &&
+                os.sign.meta.y == s.sign.meta.y
+            )
+            console.log({
+              input: ori,
+              currnet: s
+            });
+
+             
+            if (s && ori) {
+              s.sign.imagedata = ori.sign.imagedata;
+              s.sign.signed = true;
+            }
+
+          }
+        )
+
+        console.log(
+          {
+            signf: this.signatures,
+            signs: this.originalSignatures.map(
+              s => {
+                return {
+                  data: s,
+                  x: s.sign.meta.x,
+                  y: s.sign.meta.y,
+                  imagedata: s.sign.imagedata
+                }
+              }
+            )
+          }
+        )
+
       }
     );
   }
@@ -243,7 +283,8 @@ export class PdfviewComponent implements AfterViewInit {
   ) {
     this.src = data.url;
     this.signed = data.signed;
-    this.signFields = data.signfieldsmeta;
+    this.signFields = data.signfieldsmeta ? data.signfieldsmeta : [];
+    this.originalSignatures = data.signatures ? data.signatures : [];
   }
 
 
@@ -257,7 +298,7 @@ export class PdfviewComponent implements AfterViewInit {
     element.scrollTop = 1;
     setTimeout(
       () => {
-      this.watermark()
+        this.watermark()
       }, 500
     );
   }
@@ -265,9 +306,9 @@ export class PdfviewComponent implements AfterViewInit {
   watermark() {
     //return
     if (!this.signed) return;
-   // console.log(document.getElementById('vc').querySelector('canvas'));
+    // console.log(document.getElementById('vc').querySelector('canvas'));
 
-    
+
     var can = document.querySelector('canvas');
     var ctx = can.getContext("2d");
     ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
@@ -279,7 +320,7 @@ export class PdfviewComponent implements AfterViewInit {
         ctx.fillText("Readonly", 300 * i, 200 * j);
       }
     }
-     
+
     ctx.restore();
   }
 
