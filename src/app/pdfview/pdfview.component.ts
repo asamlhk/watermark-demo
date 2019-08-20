@@ -6,10 +6,10 @@ import { Observable, pipe, interval } from "rxjs";
 import 'rxjs/add/observable/fromEvent';
 import { debounceTime, throttle } from 'rxjs/operators';
 import { PDFDocumentProxy } from 'ng2-pdf-viewer';
-import { PDFAnnotationData } from 'pdfjs-dist';
+import { PDFAnnotationData, OPS } from 'pdfjs-dist';
 import { SignComponent } from '../sign/sign.component';
 import { degrees, PDFDocument, rgb, StandardFonts } from 'pdf-lib';
- 
+
 
 @Component({
   selector: 'app-pdfview',
@@ -61,6 +61,8 @@ export class PdfviewComponent implements AfterViewInit {
 
 
   showSignField(page) {
+    if (typeof this.signFields == 'undefined')
+      return;
     this.signFields.filter(f => f.htmlfield).forEach(
       f => {
         f.page == page ? f.htmlfield.style.display = 'block' : f.htmlfield.style.display = 'none'
@@ -179,32 +181,46 @@ export class PdfviewComponent implements AfterViewInit {
   loadComplete(pdf: PDFDocumentProxy): void {
     let ps = [];
     this.pdf = pdf;
+
+
+
+    pdf.getMetadata().then(m => m).then(m => console.log(m))
     for (let i = 1; i <= pdf.numPages; i++) {
       let currentPage = null;
+
+
       ps.push(pdf.getPage(i).then(p => {
         currentPage = p;
-        this.dpiRatio = (960 / p.getViewport(1).width)
 
+        this.dpiRatio = (960 / p.getViewport(1).width);
         return p.getAnnotations();
       }).then(ann => {
+        if (this.signFields) {
 
-        const annotations = (<any>ann) as PDFAnnotationData[];
-        const sf = annotations
-          .map(a => {
-            return {
-              page: i,
-              x: a.rect[0],
-              y: a.rect[1],
-              style: 'normal'
-            }
-          });
-        this.signFields = this.signFields.concat(sf);
+          const annotations = (<any>ann) as PDFAnnotationData[];
+          const sf = annotations
+            .map(a => {
+              return {
+                page: i,
+                x: a.rect[0],
+                y: a.rect[1],
+                style: 'normal'
+              }
+            });
+
+
+          this.signFields = this.signFields.concat(sf);
+        }
+
+
       }));
     }
     Promise.all(ps).then(
       () => {
-        this.signFields.forEach(f => f.htmlfield = this.addSignField(f.x, f.y, f.style, f.page));
-        this.changePage(1)
+        if(this.signFields)
+          this.signFields.forEach(f => f.htmlfield = this.addSignField(f.x, f.y, f.style, f.page));
+        this.changePage(1);
+        
       }
     );
   }
@@ -234,23 +250,31 @@ export class PdfviewComponent implements AfterViewInit {
     document.body.scrollTop = 1; // For Safari
     var element = document.getElementById('pdfview');
     element.scrollTop = 1;
+    setTimeout(
+      () => {
+      this.watermark()
+      }, 300
+    );
   }
 
   watermark() {
     //return
     if (!this.signed) return;
-    var can = document.getElementById('pdfview').querySelector('canvas');
+   // console.log(document.getElementById('vc').querySelector('canvas'));
+
+    
+    var can = document.querySelector('canvas');
     var ctx = can.getContext("2d");
     ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
     ctx.font = "30px Arial";
     //ctx.clearRect(0,0,can.width, can.height);
-    ctx.rotate(-45);
+    //ctx.rotate(-45);
     for (var i = -100; i < 100; i++) {
       for (var j = -100; j < 100; j++) {
         ctx.fillText("Readonly", 300 * i, 200 * j);
       }
     }
-    ctx.rotate(45);
+     
     ctx.restore();
   }
 

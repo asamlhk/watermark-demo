@@ -40,6 +40,7 @@ export class AppComponent {
           page: 15,
           x: 400,
           y: 700,
+
           style: 'insured'
         }
       ]
@@ -58,7 +59,13 @@ export class AppComponent {
           meta: null,
         },
       ]
+    },
+    {
+      name: 'Signed Doc',
+      url: 'https://firebasestorage.googleapis.com/v0/b/storage-5ad5a.appspot.com/o/newpdf%20(66).pdf?alt=media&token=36b59ffb-04a4-4207-98ca-9267b69affe6',
+      signed: true
     }
+
   ]
 
   constructor(public dialog: MatDialog) {
