@@ -11,6 +11,12 @@ export class AppComponent {
   signed = false;
   documents = [
     {
+        name: 'USD',
+        url: 'https://firebasestorage.googleapis.com/v0/b/storage-5ad5a.appspot.com/o/T19_USD_DBS%20(11-2018)%20with%20PICS%20-%20Acroform%20-%201%20field.PDF?alt=media&token=18d40fb2-3e96-41ff-805a-0e55c03410cb',
+        signed: false,
+        signatures: []
+    },
+    {
       name: 'La Vie',
       url: 'https://firebasestorage.googleapis.com/v0/b/storage-5ad5a.appspot.com/o/TC7%20-%20La%20Vie%20(EN%2C%20HK).pdf?alt=media&token=cf242713-5862-44f0-882f-77f4dbb9b145',
       signed: false,

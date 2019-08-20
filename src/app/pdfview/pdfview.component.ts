@@ -107,7 +107,7 @@ export class PdfviewComponent implements AfterViewInit {
   }
 
   /** poc for client side pdf generation  */
-  getPDF() {
+  genPDF() {
     this.pdf.getData().then(
       data => {
         PDFDocument.load(data).then(
@@ -127,7 +127,7 @@ export class PdfviewComponent implements AfterViewInit {
                   pngImage => {
                     page.drawImage(pngImage, {
                       x: meta.x / this.dpiRatio,
-                      y: height - meta.y / this.dpiRatio - 70,
+                      y: height - meta.y / this.dpiRatio - 30,
                       height: pngImage.scale(0.3).height,
                       width: pngImage.scale(0.3).width,
                     })
@@ -191,6 +191,7 @@ export class PdfviewComponent implements AfterViewInit {
 
       ps.push(pdf.getPage(i).then(p => {
         currentPage = p;
+        
 
         this.dpiRatio = (960 / p.getViewport(1).width);
         return p.getAnnotations();
@@ -198,12 +199,17 @@ export class PdfviewComponent implements AfterViewInit {
         if (this.signFields) {
 
           const annotations = (<any>ann) as PDFAnnotationData[];
+          const h = currentPage.getViewport(1).height;
+  
           const sf = annotations
+          .filter(
+                s => s.fieldType == 'Sig'//s.subtype == 'fieldType'
+              )
             .map(a => {
               return {
                 page: i,
                 x: a.rect[0],
-                y: a.rect[1],
+                y: h-a.rect[1],
                 style: 'normal'
               }
             });
