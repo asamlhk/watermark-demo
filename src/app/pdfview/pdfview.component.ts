@@ -253,7 +253,7 @@ export class PdfviewComponent implements AfterViewInit {
     setTimeout(
       () => {
       this.watermark()
-      }, 300
+      }, 500
     );
   }
 
