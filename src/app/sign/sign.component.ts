@@ -13,7 +13,7 @@ export class SignComponent {
   imagedata = null;
 
   @Input() signType;
-
+  @Input()
   meta;
 
 
