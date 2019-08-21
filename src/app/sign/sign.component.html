@@ -16,7 +16,7 @@
  
 <div class="signField" [ngStyle]="{'background-color': getColor(meta.fieldname), 'width': getWidth(meta.rect), height: getHeight(meta.rect)}"
 (click)="imagedata='data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='">
-<div id="signImage" [ngStyle]="{'display': signed?'none':''}"  >Sign Here</div>
+<div  [ngStyle]="{'display': signed?'none':''}"  >Sign Here</div>
   <div id="signImage" [ngStyle]="{'display': signed?'':'none'}"  >
   <img [src]="(imagedata)" (click)="signed = false;" class="signature"/>
   <div id="watermark">COPY</div>

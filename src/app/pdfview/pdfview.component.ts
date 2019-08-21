@@ -26,11 +26,9 @@ export class PdfviewComponent implements AfterViewInit {
 
   dpiRatio//; = 96 / 72 * 1.2;
 
-  @ViewChild("vc", { read: ViewContainerRef }) vc: ViewContainerRef;
+  @ViewChild("vc", { 'read': ViewContainerRef }) vc: ViewContainerRef;
 
   changingPage = false;
-
-
   signatures = [];
   originalSignatures = [];
 
@@ -44,6 +42,7 @@ export class PdfviewComponent implements AfterViewInit {
     ).every(s => s)
 
   }
+
   pageNeedtoSign = () => {
     const sp = this.signatures.map(s => s.sign.meta.page);
     const l = new Set(sp);
@@ -59,7 +58,6 @@ export class PdfviewComponent implements AfterViewInit {
 
     return l.size;
   }
-
 
   showSignField(page) {
     if (typeof this.signFields == 'undefined')
@@ -251,7 +249,6 @@ export class PdfviewComponent implements AfterViewInit {
   ngAfterViewInit() {
   }
 
-
   constructor(
     public dialogRef: MatDialogRef<PdfviewComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -264,7 +261,6 @@ export class PdfviewComponent implements AfterViewInit {
     this.signFields = data.signfieldsmeta ? data.signfieldsmeta : [];
     this.originalSignatures = data.signatures ? data.signatures : [];
   }
-
 
   changePage(p) {
     this.cpage = p;
