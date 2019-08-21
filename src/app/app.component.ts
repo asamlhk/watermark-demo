@@ -96,7 +96,9 @@ export class AppComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result.next) {
         this.documents[i].signatures = result.signatures;
+        this.documents[i].sign = true;
         this.openDialog(i + 1)
+
       }
 
     });
