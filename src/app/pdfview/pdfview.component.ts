@@ -88,9 +88,9 @@ export class PdfviewComponent implements AfterViewInit {
       x: x * this.dpiRatio,
       y: y * this.dpiRatio,
       signType,
-      rect: rect?rect.map(x => x * this.dpiRatio):null,
+      rect: rect ? rect.map(x => x * this.dpiRatio) : null,
       fieldname,
-      dpiRatio : this.dpiRatio
+      dpiRatio: this.dpiRatio
     }
 
     let element: HTMLElement = <HTMLElement>component.location.nativeElement;
@@ -190,7 +190,7 @@ export class PdfviewComponent implements AfterViewInit {
     this.pageRead[0] = true;
     this.changePage(1);
 
-    pdf.getMetadata().then(m => m).then(m => console.log(m))
+
     for (let i = 1; i <= pdf.numPages; i++) {
       let currentPage = null;
       ps.push(pdf.getPage(i).then(p => {
@@ -203,17 +203,17 @@ export class PdfviewComponent implements AfterViewInit {
           const h = currentPage.getViewport(1).height;
 
           const sf = annotations
-            .filter(s => s.fieldType == 'Sig'//s.subtype == 'fieldType'
+            .filter(s => s['fieldType'] == 'Sig'//s.subtype == 'fieldType'
             )
             .map(a => {
-              console.log(a)
+
               return {
                 page: i,
                 x: a.rect[0],
                 y: h - a.rect[1],
                 style: 'normal',
                 rect: a.rect,
-                name: a.fieldName
+                name: a['fieldName']
               }
             });
 
@@ -282,7 +282,6 @@ export class PdfviewComponent implements AfterViewInit {
   }
 
   addWatermark() {
-    //
     if (!this.signed) return;
 
     var can = document.querySelector('canvas');
@@ -292,7 +291,7 @@ export class PdfviewComponent implements AfterViewInit {
 
     for (var i = -100; i < 100; i++) {
       for (var j = -100; j < 100; j++) {
-        ctx.fillText("Readonly", 300 * i, 200 * j);
+        ctx.fillText("Frozen Document", 300 * i, 200 * j);
       }
     }
 
@@ -309,7 +308,34 @@ export class PdfviewComponent implements AfterViewInit {
   }
 
   pageChanged(event) {
-    console.log(event)
+    console.log({
+      page: event
+    })
+  }
+
+  previous() {
+    const unsignedfield = this.getunsignedfield();
+    if (unsignedfield) {
+      const sign = confirm('unsigned field found, still go previous doc?')
+      if (!sign) {
+        this.changePageAndHighlight(unsignedfield.sign.meta.page, unsignedfield.sign.meta.y);
+        return;
+      }
+      else {
+        this.dialogRef.close({
+          signatures: this.signatures,
+          next: false,
+          previous: true
+        });
+      }
+    }
+    else {
+      this.dialogRef.close({
+        signatures: this.signatures,
+        next: false,
+        previous: true
+      });
+    }
   }
 
 
@@ -324,14 +350,16 @@ export class PdfviewComponent implements AfterViewInit {
       else {
         this.dialogRef.close({
           signatures: this.signatures,
-          next: false
+          next: false,
+          previous: false
         });
       }
     }
     else {
       this.dialogRef.close({
         signatures: this.signatures,
-        next: false
+        next: false,
+        previous: false
       });
     }
   }
@@ -345,7 +373,8 @@ export class PdfviewComponent implements AfterViewInit {
   save() {
     this.dialogRef.close({
       signatures: this.signatures,
-      next: true
+      next: true,
+      previous: false
     });
   }
 

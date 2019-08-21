@@ -95,10 +95,15 @@ export class AppComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result.next) {
+        if(i == this.documents.length - 1) return;
         this.documents[i].signatures = result.signatures;
         this.documents[i].sign = true;
-        this.openDialog(i + 1)
+        this.openDialog(i + 1);
 
+      }
+      if(result.previous) {
+        if(i == 0) return;
+        this.openDialog(i -1);
       }
 
     });

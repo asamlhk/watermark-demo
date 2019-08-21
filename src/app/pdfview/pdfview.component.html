@@ -3,6 +3,8 @@
 		<button mat-fab  [ngClass]="" (click)="changePage(cpage-1)" id="prev"><<</button> 
     Page   <input (keyup)="changePage(cpage)" [(ngModel)]="cpage">
     <button mat-fab  (click)="changePage(cpage+1)" id="next" >>></button> 
+
+    <button mat-raised-button (click)="previous()"  >Previous Doc</button>
     <button mat-fab  (click)="onNoClick()" id="close" >Close</button> 
     All Signed : {{allSigned()}} || Page Signed: {{pageNeedtoSign() - signedPages()}} / {{pageNeedtoSign()}}
     <button mat-raised-button (click)="save()" [disabled]="!allSigned()">Save and Next</button>
