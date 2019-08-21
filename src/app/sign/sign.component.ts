@@ -30,11 +30,10 @@ export class SignComponent {
   }
 
   getWidth(rect) {
-   
-    return rect?rect[2] - rect[0] + 'px':'100px';
+    return rect ? rect[2] - rect[0] + 'px' : '200px';
   }
   getHeight(rect) {
-    return rect?rect[3] - rect[1] + 'px':'50px';
+    return rect ? rect[3] - rect[1] + 'px' : '50px';
   }
   getColor(name) {
     /*
@@ -54,12 +53,13 @@ Account Holder: Light orange - R: 247, G: 230, B: 215 (for Autopay DDA form) #f7
 
 Joint Account Holder: Light orange - R: 247, G: 230, B: 215 (for Autopay DDA form) #f7e6d7
 */
- 
 
-    return name?name.includes("policyOwnerSignature") ? '#ededed' :
-    name.includes("jointAccountHolderSignature") ? '#f7e6d7' :
-    name.includes("accountHolderSignature") ? '#f7e6d7' : 'gray' : 'gray';
- 
+
+    return name ? name.includes("policyOwnerSignature") ? '#ededed' :
+      //name.includes("jointAccountHolderSignature") ? '#f7e6d7' :
+      name.includes("accountHolderSignature") ? '#f7e6d7' :
+        'gray' : 'gray';
+
   }
 
 
