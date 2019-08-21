@@ -29,7 +29,39 @@ export class SignComponent {
   constructor(private _sanitizer: DomSanitizer) {
   }
 
+  getWidth(rect) {
+   
+    return rect[2] - rect[0] + 'px'
+  }
+  getHeight(rect) {
+    return rect[3] - rect[1] + 'px'
+  }
+  getColor(name) {
+    /*
+  //  Apply:
+
+//Policyowner: Light grey - R: 237, G: 237, B: 237 #ededed
+
+Witness: Light green - R: 211, G: 221, B: 184 (same as Agent) #d3ddb8
+
+Agent (Advisor): Light green - R: 211, G: 221, B: 184 #d3ddb8
+
+Insured: Light blue - R: 179, G: 193, B: 217 #b3c1d9
+
+Payor: Light yellow - R: 252, G: 242, B: 207 #fcf2cf
+
+Account Holder: Light orange - R: 247, G: 230, B: 215 (for Autopay DDA form) #f7e6d7
+
+Joint Account Holder: Light orange - R: 247, G: 230, B: 215 (for Autopay DDA form) #f7e6d7
+*/
  
+
+    return name?name.includes("policyOwnerSignature") ? '#ededed' :
+    name.includes("jointAccountHolderSignature") ? '#f7e6d7' :
+    name.includes("accountHolderSignature") ? '#f7e6d7' : '' : '';
+ 
+  }
+
 
   ngAfterViewInit() {
     // this.signaturePad is now available
@@ -38,6 +70,8 @@ export class SignComponent {
     let ele: any = document.getElementsByTagName("canvas")[0]
     let ctx = ele.getContext("2d");
   }
+
+
 
   done() {
     this.imagedata = this.signaturePad.toDataURL("png");
@@ -48,7 +82,7 @@ export class SignComponent {
   }
 
   drawComplete() {
-    
+
   }
 
   drawStart() {
