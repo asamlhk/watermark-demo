@@ -17,5 +17,5 @@
   <img [src]="(imagedata)" (click)="signed = false;" class="signature"/>
     <div id="imgOverlay">COPY</div>
   </div>
-  <button *ngIf="!imagedata" mat-raised-button (click)="imagedata='ddd'" [ngClass]="signType">Sign Here</button>
+  <button *ngIf="!imagedata" mat-raised-button (click)="imagedata='data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='" [ngClass]="signType">Sign Here</button>
 </div>
