@@ -15,10 +15,11 @@
   <div id="pdfview" [ngStyle]="{'transform': 'scale(' + scale + ')'}">
     <pdf-viewer [src]="src"
         [original-size]="false"
-        (after-load-complete)="callBackFn($event)"
+        (after-load-complete)="loadComplete($event)"
         [show-all]="false"
         [(page)]="cpage"   
         [autoresize]="true"
+        (pagechange)="pageChanged($event)"
         id="vc"
         
         #vc   

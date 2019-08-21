@@ -180,6 +180,13 @@ export class PdfviewComponent implements AfterViewInit {
     let ps = [];
     this.pdf = pdf;
 
+    this.pdf = pdf;
+    this.pageRead = R.range(0, pdf.numPages).map(
+      x => false
+    )
+    this.pageRead[0] = true;
+    this.changePage(1);
+
     pdf.getMetadata().then(m => m).then(m => console.log(m))
     for (let i = 1; i <= pdf.numPages; i++) {
       let currentPage = null;
@@ -263,13 +270,13 @@ export class PdfviewComponent implements AfterViewInit {
     element.scrollTop = 1;
     setTimeout(
       () => {
-        this.watermark()
+        this.addWatermark()
       }, 500
     );
   }
 
-  watermark() {
-    //return
+  addWatermark() {
+    //
     if (!this.signed) return;
 
     var can = document.querySelector('canvas');
@@ -286,18 +293,6 @@ export class PdfviewComponent implements AfterViewInit {
     ctx.restore();
   }
 
-
-  callBackFn(pdf) {
-    // do anything with "pdf"
-    this.pdf = pdf;
-    this.pageRead = R.range(0, pdf.numPages).map(
-      x => false
-    )
-    this.pageRead[0] = true;
-    this.changePage(1);
-    this.loadComplete(pdf);
-  }
-
   changePageAndHighlight = (p, y) => {
     this.changePage(p);
     setTimeout(
@@ -305,6 +300,10 @@ export class PdfviewComponent implements AfterViewInit {
         document.getElementById("pdfview").scrollTo(0, y);
       }, 500
     );
+  }
+
+  pageChanged(event) {
+    console.log(event)
   }
 
 
