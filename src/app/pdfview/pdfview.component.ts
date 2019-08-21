@@ -313,6 +313,7 @@ export class PdfviewComponent implements AfterViewInit {
       const sign = confirm('unsigned field found, still close?')
       if (!sign) {
         this.changePageAndHighlight(unsignedfield.sign.meta.page, unsignedfield.sign.meta.y);
+        return;
       }
       else {
         this.dialogRef.close({
@@ -320,6 +321,12 @@ export class PdfviewComponent implements AfterViewInit {
           next: false
         });
       }
+    }
+    else {
+      this.dialogRef.close({
+        signatures: this.signatures,
+        next: false
+      });
     }
   }
 
