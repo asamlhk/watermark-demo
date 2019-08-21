@@ -88,7 +88,7 @@ export class PdfviewComponent implements AfterViewInit {
       x: x * this.dpiRatio,
       y: y * this.dpiRatio,
       signType,
-      rect: rect.map(x => x * this.dpiRatio),
+      rect: rect?rect.map(x => x * this.dpiRatio):null,
       fieldname,
       dpiRatio : this.dpiRatio
     }
